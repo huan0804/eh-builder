@@ -1,0 +1,137 @@
+// Trạng thái game tập trung — học từ Monogatari (`storage` + `state` + `history`)
+// và SugarCube (`State.variables` + moment history + autosave có version).
+//
+// Nguyên tắc:
+// 1. MỌI thứ cần lưu nằm trong MỘT object thuần JSON (không hàm, không Set/Map, không class).
+// 2. Chỉ đổi state qua reducer (sự kiện có tên) → dễ lưu, dễ debug, dễ viết test.
+// 3. State tạm của giao diện (ô đang chọn, thông báo, modal) KHÔNG nằm ở đây.
+// 4. Save có `version`. Đổi cấu trúc state → tăng SAVE_VERSION và viết migration,
+//    đừng để save cũ làm crash game của người chơi.
+
+export const STAGES = ['prologue', 'chapter1', 'investigation', 'thinkingBoard', 'epilogue'];
+
+export const SAVE_KEY = 'eh-builder:case1:autosave';
+export const SAVE_VERSION = 1;
+
+export const initialState = {
+  stage: 'prologue',
+  collectedIds: [],
+  // Lịch sử hội thoại mỗi nghi phạm: danh sách id node đã xem, node cuối là node hiện tại
+  interviewHistory: { khang: ['intro'], chi: ['intro'], duc: ['intro'] },
+  unlockedSteps: [],
+  eliminated: { A: false, B: false },
+};
+
+export function gameReducer(state, action) {
+  switch (action.type) {
+    case 'NEXT_STAGE': {
+      const idx = STAGES.indexOf(state.stage);
+      return { ...state, stage: STAGES[idx + 1] ?? STAGES[STAGES.length - 1] };
+    }
+    case 'COLLECT':
+      return state.collectedIds.includes(action.id)
+        ? state
+        : { ...state, collectedIds: [...state.collectedIds, action.id] };
+    case 'ADVANCE_NODE': {
+      const history = state.interviewHistory[action.suspectId];
+      if (history.includes(action.nodeId)) return state;
+      return {
+        ...state,
+        interviewHistory: { ...state.interviewHistory, [action.suspectId]: [...history, action.nodeId] },
+      };
+    }
+    case 'UNLOCK_STEP':
+      return state.unlockedSteps.includes(action.id)
+        ? state
+        : { ...state, unlockedSteps: [...state.unlockedSteps, action.id] };
+    case 'ELIMINATE':
+      return { ...state, eliminated: { ...state.eliminated, [action.hypId]: true } };
+    case 'LOAD':
+      return action.state;
+    case 'RESTART':
+      return initialState;
+    default:
+      return state;
+  }
+}
+
+// Migration: mỗi hàm nâng save từ version N lên N+1. Hiện chưa có (mới version 1).
+const MIGRATIONS = {
+  // 1: (state) => ({ ...state, newField: defaultValue }),
+};
+
+function migrate(save) {
+  let { version, state } = save;
+  while (version < SAVE_VERSION) {
+    const step = MIGRATIONS[version];
+    if (!step) return null; // không nâng cấp được → bỏ save, không crash
+    state = step(state);
+    version += 1;
+  }
+  return version === SAVE_VERSION ? state : null;
+}
+
+// Kiểm tra save có đúng hình dạng không trước khi dùng (localStorage có thể bị sửa tay/hỏng)
+function isValidState(s) {
+  return (
+    s &&
+    STAGES.includes(s.stage) &&
+    Array.isArray(s.collectedIds) &&
+    s.interviewHistory &&
+    ['khang', 'chi', 'duc'].every((k) => Array.isArray(s.interviewHistory[k])) &&
+    Array.isArray(s.unlockedSteps) &&
+    s.eliminated
+  );
+}
+
+export function loadAutosave() {
+  try {
+    const raw = localStorage.getItem(SAVE_KEY);
+    if (!raw) return null;
+    const state = migrate(JSON.parse(raw));
+    return isValidState(state) ? state : null;
+  } catch {
+    return null;
+  }
+}
+
+export function writeAutosave(state) {
+  try {
+    if (state.stage === 'prologue') return; // chưa bắt đầu thì không ghi đè save cũ
+    localStorage.setItem(
+      SAVE_KEY,
+      JSON.stringify({ version: SAVE_VERSION, savedAt: Date.now(), state })
+    );
+  } catch {
+    // Trình duyệt chặn storage (ẩn danh, iframe của cổng game...) → game vẫn chơi được, chỉ không lưu
+  }
+}
+
+export function clearAutosave() {
+  try {
+    localStorage.removeItem(SAVE_KEY);
+  } catch {
+    /* bỏ qua */
+  }
+}
+
+// Cờ "đã xem cảnh mở đầu season" (ColdOpen) — tách riêng khỏi save chính vì đây là một lựa chọn
+// hiển thị (settings), không phải tiến trình vụ án: lưu ngay cả khi người chơi chưa "Bắt đầu điều
+// tra" chính thức (Prologue chưa ghi save), và giữ nguyên qua mọi lần chơi lại (RESTART).
+const COLD_OPEN_KEY = 'eh-builder:season:coldOpenSeen';
+
+export function hasSeenColdOpen() {
+  try {
+    return localStorage.getItem(COLD_OPEN_KEY) === '1';
+  } catch {
+    return false; // storage bị chặn → luôn xem đầy đủ, không sao (chỉ mất khả năng "Bỏ qua")
+  }
+}
+
+export function markColdOpenSeen() {
+  try {
+    localStorage.setItem(COLD_OPEN_KEY, '1');
+  } catch {
+    /* bỏ qua — game vẫn chơi được, chỉ không nhớ để hiện nút Bỏ qua lần sau */
+  }
+}

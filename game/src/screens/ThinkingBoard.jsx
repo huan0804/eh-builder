@@ -1,18 +1,7 @@
 import { useState } from 'react';
 import { thinkingBoardSolution } from '../data/case1';
 
-const LABELS = {
-  vy: 'Vy',
-  khang: 'Khang',
-  chi: 'Chi',
-  duc: 'Đức',
-  tuYRoiDi: 'Tự ý rời đi',
-  bịBắtCóc: 'Bị bắt cóc',
-  gặpTaiNạn: 'Gặp tai nạn',
-  sợHãiVìPhátHiệnĐiềuGì: 'Sợ hãi vì phát hiện điều gì đó',
-  ápLựcHọcTập: 'Áp lực học tập',
-  mâuThuẫnBạnBè: 'Mâu thuẫn bạn bè',
-};
+const LABELS = thinkingBoardSolution.labels;
 
 export default function ThinkingBoard({ onComplete }) {
   const [answers, setAnswers] = useState({});

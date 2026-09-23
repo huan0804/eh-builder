@@ -102,6 +102,11 @@ body {
   font-weight: 600;
 }
 
+/* Nội tâm Lam: phân biệt rõ với thoại nói ra ngoài */
+.dialogue-inner-thought {
+  color: var(--muted);
+}
+
 .btn-primary,
 .btn-secondary {
   border: none;
@@ -430,4 +435,245 @@ body {
   padding: 0.75rem 1rem;
   border-radius: 6px;
   text-align: left;
+}
+
+/* Chọn nhiều chứng cứ + loại giả thuyết bằng tổ hợp chứng cứ */
+.evidence-inventory li {
+  margin-bottom: 0.5rem;
+}
+
+button.evidence-item {
+  display: block;
+  width: 100%;
+  text-align: left;
+  font: inherit;
+  color: inherit;
+  margin-bottom: 0;
+}
+
+button.evidence-item:focus-visible,
+.btn-eliminate:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+}
+
+.hypothesis {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.5rem;
+}
+
+.btn-eliminate {
+  font: inherit;
+  font-size: 0.8rem;
+  padding: 0.25rem 0.6rem;
+  border-radius: 6px;
+  border: 1px solid var(--accent);
+  background: #fff;
+  color: var(--accent);
+  cursor: pointer;
+}
+
+.btn-eliminate:disabled {
+  border-color: var(--border);
+  color: var(--muted);
+  cursor: not-allowed;
+}
+
+.board-feedback {
+  margin: 0.6rem 0 0;
+  padding: 0.5rem 0.7rem;
+  border-radius: 6px;
+  background: #fdecec;
+  font-size: 0.9rem;
+}
+
+.board-feedback.ok {
+  background: var(--success-bg);
+  color: var(--success-ink);
+}
+
+.dialogue-reply.wrong {
+  color: var(--muted);
+  font-style: italic;
+}
+
+/* Nhật ký hội thoại: các lượt cũ mờ hơn, lượt hiện tại nổi bật */
+.dialogue-turn {
+  opacity: 0.6;
+  padding-bottom: 0.5rem;
+  margin-bottom: 0.5rem;
+  border-bottom: 1px dashed var(--border);
+}
+
+.dialogue-turn.current {
+  opacity: 1;
+  border-bottom: none;
+  margin-bottom: 0;
+}
+
+/* ---------- Cảnh mở đầu season (ColdOpen) ---------- */
+
+.cold-open {
+  background: #16140f;
+  border-radius: 12px;
+  min-height: 420px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  overflow: hidden;
+  padding: 1.5rem;
+}
+
+.cold-open-screen {
+  color: #d8d2c4;
+  width: 100%;
+  max-width: 320px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 300px;
+  animation: fadeIn 0.6s ease;
+}
+
+.cold-open-timestamp {
+  font-size: 0.85rem;
+  letter-spacing: 0.05em;
+  color: #8a8378;
+}
+
+.phone-frame {
+  background: #1f1c16;
+  border: 1px solid #3a352a;
+  border-radius: 18px;
+  width: 100%;
+  padding: 1rem;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
+}
+
+.phone-chat-header {
+  border-bottom: 1px solid #3a352a;
+  padding-bottom: 0.5rem;
+  margin-bottom: 0.75rem;
+}
+
+.phone-chat-name-blur {
+  filter: blur(3px);
+  color: #6b6558;
+  letter-spacing: 0.15em;
+}
+
+.phone-chat-body {
+  min-height: 90px;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  justify-content: flex-end;
+}
+
+.phone-bubble {
+  background: #2a251c;
+  border-radius: 12px;
+  padding: 0.5rem 0.75rem;
+  font-size: 0.85rem;
+  margin: 0;
+  align-self: flex-end;
+}
+
+.typing-blur {
+  filter: blur(2.5px);
+  color: #8a8378;
+  transition: filter 0.4s ease;
+}
+
+.typing-blur.fading {
+  opacity: 0.4;
+}
+
+.phone-bubble-final {
+  color: #fdf6ec;
+  font-weight: 600;
+  animation: popIn 0.3s ease-out;
+}
+
+.cold-open-chat-list {
+  width: 100%;
+}
+
+.cold-open-chat-list-item {
+  background: #1f1c16;
+  border-radius: 10px;
+  padding: 0.6rem 0.9rem;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem 0.6rem;
+  font-size: 0.8rem;
+  color: #8a8378;
+  animation: fadeSlideIn 0.4s ease-out;
+}
+
+.chat-list-name {
+  color: #d8d2c4;
+  font-weight: 600;
+}
+
+.chat-list-preview {
+  width: 100%;
+  color: #6b6558;
+  font-style: italic;
+}
+
+.cold-open-silhouette {
+  width: 100%;
+  height: 200px;
+  background: radial-gradient(circle at 50% 40%, rgba(255, 255, 255, 0.04), transparent 60%);
+  animation: fadeIn 0.5s ease;
+}
+
+.cold-open-rec {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  color: #e05c4a;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  font-size: 0.9rem;
+  animation: fadeIn 0.4s ease;
+}
+
+.rec-dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: #e05c4a;
+  animation: recPulse 1s ease-in-out infinite;
+}
+
+@keyframes recPulse {
+  0%,
+  100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.3;
+  }
+}
+
+.cold-open-skip {
+  position: absolute;
+  bottom: 1rem;
+  right: 1rem;
+  margin: 0;
+  background: rgba(255, 255, 255, 0.1);
+  color: #d8d2c4;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.cold-open-skip:hover {
+  background: rgba(255, 255, 255, 0.18);
 }

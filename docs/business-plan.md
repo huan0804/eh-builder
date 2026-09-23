@@ -17,6 +17,15 @@ Ràng buộc đã xác nhận với người dùng:
 
 ---
 
+## 0. Quyết định 09/2026: Việt Nam trước
+
+Sau khi phân tích insight người chơi Black Myth: Wukong (`docs/insights-black-myth-wukong.md`), **thị trường chính được chốt là Việt Nam**. Bối cảnh văn hóa số VN (trang confession, Zalo, MoMo...) được giữ nguyên làm điểm mạnh, không cần bản địa hóa cho người chơi quốc tế ở giai đoạn này.
+
+**Hệ quả cần xử lý** (chưa quyết, để lại cho buổi thảo luận sau):
+- **Kênh phát hành**: CrazyGames/Poki là cổng game quốc tế — người chơi VN hiếm khi tìm game ở đó. Kênh phù hợp hơn: link web tự host (ví dụ Vercel, đã có sẵn trong tài khoản GitHub) chia sẻ qua nhóm Facebook fan trinh thám, TikTok, nhóm Zalo lớp học. Có thể vẫn đăng CrazyGames/Poki sau như kênh phụ.
+- **Mô hình kiếm tiền cần xem lại**: SDK quảng cáo của CrazyGames/Poki chỉ chạy trên chính cổng đó; web tự host cần mạng quảng cáo riêng (cần kiểm tra điều kiện hiện tại của các lựa chọn như quảng cáo cho game HTML5 của Google). Giá quảng cáo cho người xem ở VN thấp hơn nhiều so với Âu-Mỹ, nên mô hình ads-first vốn đã là "volume game" sẽ càng khó. Các hướng bổ sung đáng cân nhắc: ủng hộ qua MoMo/ZaloPay (giống mô hình donate của The Roottrees are Dead), hoặc bán các phần sau với giá nhỏ qua ví điện tử.
+- **Lan truyền**: insight #2 — người chơi trong nước tự quảng bá khi tự hào về sản phẩm; cần một cách chia sẻ dễ dàng (ví dụ ảnh kết quả Thinking Board để đăng lên mạng xã hội).
+
 ## 1. Vấn đề & Khách hàng
 
 **Vấn đề**: Người chơi Việt Nam yêu thích thể loại trinh thám suy luận (độc giả trung thành của các manga trinh thám kiểu Conan/Kindaichi) hiện không có game nội địa nào cho phép họ **thực sự đóng vai thám tử** — thu thập chứng cứ, chất vấn nghi phạm, đưa ra kết luận sòng phẳng (fair-play) — mà không rơi vào một trong ba lối mòn: (a) khung cảnh kinh dị/hù dọa, (b) bối cảnh lịch sử phương Tây xa lạ (Golden Idol: thế kỷ 19; Obra Dinn: thế kỷ 18), hoặc (c) visual novel thoại tuyến tính không có cơ chế suy luận thực sự.

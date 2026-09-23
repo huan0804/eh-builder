@@ -14,14 +14,67 @@
 
 ---
 
-## 2. Nhân vật chính (Player Character)
+## 2. Nhân vật chính — Lam (chốt 09/2026)
 
-**Vai trò**: Thành viên **CLB Báo trường / Tin học** (tên CLB cụ thể để đặt sau) — có lý do nội tại hợp lý để "điều tra" mà không cần thẩm quyền chính thức:
-- CLB Báo trường → có lý do phỏng vấn, hỏi han, xin xem camera an ninh thư viện/phòng máy (với sự đồng ý của giáo viên phụ trách) để "viết bài".
-- Ban giám thị/GVCN đôi khi "nhờ" nhân vật chính xác minh thông tin trước khi báo cáo lên trên hoặc báo công an — vì các vụ việc ban đầu có vẻ như học sinh tự ý bỏ đi, không muốn làm ầm ĩ nếu chưa chắc chắn.
-- **Giới hạn quan trọng (để giữ fair-play)**: Nhân vật chính KHÔNG có toàn quyền truy cập dữ liệu số. Một số thứ phải xin phép (camera an ninh — chỉ được xem đoạn ngắn, giáo viên duyệt), một số phải tự tìm cách hợp pháp (hỏi bạn bè, xem lại bài đăng công khai trên mạng xã hội trường), tạo ra khoảng trống buộc người chơi phải suy luận thay vì "có sẵn mọi câu trả lời".
+> Viết lại sau khi phân tích insight người chơi Black Myth: Wukong (`docs/insights-black-myth-wukong.md`, bài học số 4: nhân vật chính mất cá tính thì câu chuyện mất linh hồn). Phần "Vai trò" và "Giới hạn" bên dưới giữ nguyên tinh thần bản cũ.
 
-**Tính cách gợi ý** (chưa chốt tên): Quan sát tỉ mỉ, hoài nghi vừa đủ, không phải "thiên tài" mà là người kiên nhẫn ghép manh mối — giữ đúng tinh thần "ai cũng suy luận được nếu đủ tỉ mỉ" thay vì nhân vật siêu phàm.
+### Hồ sơ
+- **Tên**: An Lam, lớp 11 (năm ngoái lớp 10). Giới tính **cố ý để trung tính** — tiếng Việt cho phép (bạn bè gọi "Lam", "cậu"; Lam xưng "tớ" với bạn, "con" với Cô Hạnh) — để người chơi nào cũng nhập vai được. Không dùng "anh ấy/cô ấy" cho Lam trong mọi kịch bản.
+- **Vai trò**: thành viên **CLB Ống Kính** (báo trường kiêm quay dựng video), phụ trách **quay phim và dựng**. Được Cô Hạnh nhờ xác minh trước khi báo cấp trên.
+- **Giới hạn (giữ fair-play)**: không có toàn quyền với dữ liệu số; mọi thứ phải xin phép (Cô Hạnh, gia đình, thủ thư, bảo vệ) hoặc tự tìm từ nguồn công khai.
+
+### Tính cách
+- **Người đứng sau máy quay.** Quen quan sát hơn là lên tiếng: để ý khung hình, mốc giờ, thứ "không có trong cảnh". Giỏi nhìn, ngại nói.
+- **Kiên nhẫn, không phải thiên tài.** Suy luận bằng cách "tua lại" từng khoảnh khắc — đúng tinh thần "ai cũng suy luận được nếu đủ tỉ mỉ".
+- **Hài hước khô, tự giễu nhẹ.** Không lên giọng dạy đời, thừa nhận khi mình sai.
+- **Điểm yếu**: né đối đầu. Có bằng chứng rồi vẫn muốn "đưa cho người lớn xử lý" hơn là tự nói ra. Các cảnh đối chất là lúc Lam khó khăn nhất.
+- **Niềm tin ban đầu**: *"Máy quay không nói dối."* Cả season sẽ thử thách niềm tin này (ảnh chỉnh AI ở Phần 1, chính video của Lam bị dùng làm ảnh giả ở Phần 2, đoạn Lam từng cắt bỏ ở Phần 3+).
+
+### Giọng nói (quy tắc viết thoại)
+- Câu ngắn. Hay dùng từ nghề quay dựng một cách tự nhiên: *tua lại, khung hình, cắt cảnh, ngoài khung, bản gốc, bản dựng*. Tối đa 1-2 lần mỗi cảnh — gia vị, không phải khẩu hiệu.
+- Độc thoại nội tâm là chỗ Lam bộc lộ nhiều nhất; lời nói ra ngoài thì dè dặt, lịch sự.
+- Dòng **"Câu hỏi hiện tại"** trong màn điều tra được viết bằng giọng Lam, ví dụ: *"Tua lại: ai đã gõ dòng 'buồn ngủ' lúc 21:46?"*
+- Ví dụ:
+  - Nội tâm (quan sát): *"Cả buổi livestream, khung hình của Vy chỉ là một màu đen. Không ai nhìn thấy Vy rời đi — vì chẳng có gì để nhìn."*
+  - Nội tâm (tự giễu): *"Tớ quay cả trăm buổi học nhóm. Lần đầu tiên xem lại một buổi mà tim đập thế này."*
+  - Đối chất (ngập ngừng): *"Tớ... quen đứng sau máy quay hơn. Nhưng cái này thì tớ phải tự nói."*
+
+### Lý do cá nhân (bí mật của Lam — hé dần qua các phần)
+Tháng 3 năm ngoái, Lam (lớp 10, mới vào CLB) quay phim **Hội trại 26/3**. Trong lúc quay, Lam vô tình ghi được **một đoạn dài vài giây ở rìa khung hình** có anh Minh 12A1 đứng cạnh Ngân (em gái Minh). Khi dựng, **chị Thư — khi đó là người phụ trách hướng dẫn Lam dựng phim — bảo Lam cắt đoạn ấy đi** vì "không hay, không liên quan". Lam cắt, không hỏi lại — đúng thói quen im lặng. Bản dựng công khai không có đoạn đó; **thẻ nhớ gốc** (nhãn "HT 26-3 — gốc") vẫn nằm trong ngăn bàn/hộp thiết bị của Lam.
+- **Đã chốt (09/2026)**: chị Thư bảo cắt vì sợ đoạn phim giúp ai đó lần ra Minh đã chuyển trường về Bến Tre, rồi lần ngược ra vì sao — đúng lúc chị vừa gửi Minh tin "Im lặng thì an toàn" (xem `phan-3-script.md` mục 1). Ở Phần 3, chị Thư tráo mất thẻ nhớ khi Lam định xem lại — khung vụ án của Phần 3.
+
+### Hành trình qua season
+| Giai đoạn | Lam | Thay đổi |
+|---|---|---|
+| Phần 1 | Chỉ "xác minh giúp cô". Tin rằng máy quay không nói dối | Thấy một bức ảnh có thể nói dối (ảnh check-in chỉnh AI). Lần đầu phải tự đối chất một người bạn |
+| Phần 2 | Video chính mình quay bị dùng làm ảnh đại diện giả | Chuyện trở thành chuyện cá nhân. Nhớ lại đoạn phim từng cắt; lấy ra thẻ nhớ gốc |
+| Phần 3+ | Đoạn phim gốc là manh mối; CLB Ống Kính (báo trường) là một cái loa | Đứng trước lựa chọn: im lặng cho an toàn, hay công khai điều mình biết |
+| Kết season | — | Lam chọn lên tiếng — bước ra trước máy quay |
+
+### Quan hệ
+- **Cô Hạnh**: người tin tưởng Lam, giao việc, giữ ranh giới "hỏi han thôi, đừng làm quá".
+- **Vy**: từ người mất tích (Phần 1) thành bạn đồng hành (Phần 2). Người hiểu nỗi sợ "im lặng thì an toàn" rõ nhất.
+- **Anh Minh**: người Lam chưa từng quen nhưng đã từng *quay được* — mối nối cá nhân với bí ẩn season.
+
+---
+
+## 2b. Chủ đề season (chốt 09/2026)
+
+**Một câu**: *Im lặng thì an toàn — hay im lặng là tiếp tay?*
+
+Mỗi nhân vật chính của season là một câu trả lời khác nhau cho câu hỏi này:
+| Nhân vật | Lựa chọn |
+|---|---|
+| Anh Minh | Đã lên tiếng (gửi hộp thư ẩn danh) → bị đe dọa → bỏ chạy, im lặng |
+| Vy | Thấy điều sai → sợ hãi → trốn đi để nghĩ |
+| Phong | Chọn im lặng và xóa dấu vết để giữ học bổng — rồi bị chính nỗi sợ đó điều khiển |
+| Bảo | Muốn lên tiếng (bài đăng) nhưng vội vàng, rơi vào bẫy |
+| Lam | Người từng im lặng (cắt đoạn phim) — phải chọn lại |
+| Kẻ đứng sau | Dùng chính nỗi sợ và sự im lặng của người khác làm công cụ |
+
+**Khuôn mở đầu của season**: mỗi phần mở bằng một cảnh ~20-25 giây — người gửi bí ẩn gõ một tin nhắn "… thì an toàn" cho nhân vật then chốt của phần đó (người nhận bị che, chỉ dòng cuối được lấy nét), và tin nhắn đó được trả thưởng ở cuối phần khi nhân vật đưa điện thoại ra. Không gài chi tiết nào về danh tính người gửi cho tới khi Phần 3 chốt kẻ đứng sau. Chi tiết: `phan-1-script.md` mục 1b, `phan-2-script.md` mục 1b.
+
+Quy tắc viết: mọi phần mới phải đặt ít nhất một nhân vật trước lựa chọn *im lặng hay lên tiếng*, và mỗi phần phải thêm **đúng một sự thật mới** vào bí ẩn season; mỗi chương kết thúc bằng một câu hỏi.
 
 ---
 
@@ -66,9 +119,12 @@
 
 ## 5. Trạng thái hiện tại
 
-Kịch bản chi tiết đầy đủ (tên nhân vật, lời thoại, chứng cứ cụ thể từng chương) đã được viết tại **`docs/phan-1-script.md`**. Động cơ của Vy (nạn nhân) được chốt là: vô tình phát hiện điều gì đó liên quan đến một vụ việc trước đó ("vụ của anh Minh năm ngoái") và tạm rời đi vì sợ hãi — Phần 1 vẫn tự đóng trọn vẹn (ai/thế nào/tại sao rời đi đều được giải đáp) trong khi gieo hook rõ ràng sang bí ẩn xuyên suốt season.
+Kịch bản chi tiết đầy đủ (tên nhân vật, lời thoại, chứng cứ cụ thể từng chương) đã được viết tại **`docs/phan-1-script.md`**. Cơ chế che giấu và cách loại nghi phạm đã được viết lại (09/2026) để vá lỗ hổng logic — xem `phan-1-script.md`. Động cơ của Vy (người mất tích) được chốt là: vô tình phát hiện điều gì đó liên quan đến một vụ việc trước đó ("vụ của anh Minh năm ngoái") và tạm rời đi vì sợ hãi — Phần 1 vẫn tự đóng trọn vẹn (ai/thế nào/tại sao rời đi đều được giải đáp) trong khi gieo hook rõ ràng sang bí ẩn xuyên suốt season.
 
 **Việc còn để ngỏ**:
 - Độ dài chơi thực tế mỗi chương (ước tính thô trong `phan-1-script.md`, cần prototype để đo thật, theo đúng "Thí nghiệm tiếp theo" trong bản kế hoạch kinh doanh).
 - Tên chính thức dự án (đề xuất sau, theo yêu cầu người dùng).
-- Nội dung "vụ của anh Minh năm ngoái" — cố tình chưa viết, để lại cho giai đoạn thiết kế Phần 2.
+- ~~Nội dung "vụ của anh Minh năm ngoái"~~ — đã viết trong `docs/phan-2-script.md`: năm ngoái Minh báo cáo một nhóm chat bán đề kiểm tra qua Hộp thư ẩn danh của trang confession, được tài khoản "TL.admin2024" trả lời, rồi nhận tin "Im lặng thì an toàn".
+- ~~Phần 3: ai đứng sau TL.admin2024~~ — **đã chốt 09/2026**: chị Thư (lớp 12, trưởng ban dựng CLB Ống Kính), động cơ áp lực trả nợ vay chữa bệnh cho bố; đường dây bán đề lấy từ phòng giáo viên tổ Tự nhiên qua quyền mượn phòng của CLB. Cô Hạnh là vùng xám (từng nghi ngờ, chọn im lặng). Kịch bản đầy đủ đã viết ở `docs/phan-3-script.md`, đã qua phản biện PersonaTwin. Kết season: Lam chọn lên tiếng.
+- Phần 3+ (nếu nối dài season): ai cung cấp đề gốc cho chị Thư trước khi lọt vào phòng giáo viên — để ngỏ có chủ đích, xem hook cuối `phan-3-script.md`.
+- Triển khai Phần 3 thành `case3.js` (chưa làm — cần `case2.js` và việc tách nội dung Prologue/Chương 1 khỏi JSX trước).
