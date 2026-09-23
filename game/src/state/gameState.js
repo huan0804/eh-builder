@@ -71,8 +71,9 @@ function migrate(save) {
   return version === SAVE_VERSION ? state : null;
 }
 
-// Kiểm tra save có đúng hình dạng không trước khi dùng (localStorage có thể bị sửa tay/hỏng)
-function isValidState(s) {
+// Kiểm tra save có đúng hình dạng không trước khi dùng (localStorage có thể bị sửa tay/hỏng).
+// Export để cloudSave.js tái dùng khi validate save tải về từ Supabase — không viết lại logic.
+export function isValidState(s) {
   return (
     s &&
     STAGES.includes(s.stage) &&
@@ -133,5 +134,27 @@ export function markColdOpenSeen() {
     localStorage.setItem(COLD_OPEN_KEY, '1');
   } catch {
     /* bỏ qua — game vẫn chơi được, chỉ không nhớ để hiện nút Bỏ qua lần sau */
+  }
+}
+
+// Mã khôi phục cross-device (Supabase) — key riêng, KHÔNG nằm trong object state
+// của reducer (state phải giữ nguyên "MỘT object thuần JSON" khớp isValidState,
+// xem cloudSave.js). Giữ nguyên qua RESTART giống COLD_OPEN_KEY: mã khôi phục là
+// danh tính đồng bộ của người chơi trên thiết bị này, không phải tiến trình vụ án.
+const RECOVERY_CODE_KEY = 'eh-builder:season:recoveryCode';
+
+export function getStoredRecoveryCode() {
+  try {
+    return localStorage.getItem(RECOVERY_CODE_KEY);
+  } catch {
+    return null;
+  }
+}
+
+export function storeRecoveryCode(code) {
+  try {
+    localStorage.setItem(RECOVERY_CODE_KEY, code);
+  } catch {
+    /* bỏ qua — mã vẫn hiện trên màn hình để người chơi tự ghi lại tay */
   }
 }

@@ -5,6 +5,7 @@ import Chapter1 from './screens/Chapter1';
 import Investigation from './screens/Investigation';
 import ThinkingBoard from './screens/ThinkingBoard';
 import Epilogue from './screens/Epilogue';
+import RecoveryCodeModal from './components/RecoveryCodeModal';
 import {
   STAGES,
   initialState,
@@ -14,7 +15,10 @@ import {
   clearAutosave,
   hasSeenColdOpen,
   markColdOpenSeen,
+  getStoredRecoveryCode,
 } from './state/gameState';
+import { pushSaveToCloud } from './lib/cloudSave';
+import { logStageEnter } from './lib/analytics';
 import './App.css';
 
 export default function App() {
@@ -34,6 +38,27 @@ export default function App() {
   useEffect(() => {
     writeAutosave(state);
   }, [state]);
+
+  // Đồng bộ cloud tự động: CHỈ khi người chơi đã chủ động lấy mã khôi phục ít
+  // nhất 1 lần (xem RecoveryCodeModal mode="get"). Trước đó, không có mã nào để
+  // đồng bộ nên hiệu ứng này không làm gì — không gọi RPC nếu không cần thiết.
+  useEffect(() => {
+    if (state.stage === 'prologue') return;
+    if (!getStoredRecoveryCode()) return;
+    pushSaveToCloud(state);
+  }, [state]);
+
+  // Analytics ẩn danh: ghi nhận mỗi lần vào 1 stage. Tách khỏi effect autosave ở
+  // trên để lỗi mạng analytics không bao giờ ảnh hưởng autosave cục bộ.
+  useEffect(() => {
+    logStageEnter(state.stage);
+  }, [state.stage]);
+
+  const [recoveryModalMode, setRecoveryModalMode] = useState(null); // null | 'get' | 'load'
+
+  function loadStateFromCloud(loadedState) {
+    dispatch({ type: 'LOAD', state: loadedState });
+  }
 
   const goToNext = () => dispatch({ type: 'NEXT_STAGE' });
   const collectEvidence = (id) => dispatch({ type: 'COLLECT', id });
@@ -76,11 +101,20 @@ export default function App() {
         <span className="progress-badge">
           {STAGES.indexOf(stage) + 1} / {STAGES.length}
         </span>
+        {stage !== 'prologue' && (
+          <button className="btn-hint" onClick={() => setRecoveryModalMode('get')}>
+            ☁️ Lấy mã khôi phục
+          </button>
+        )}
       </header>
 
       <main className="game-main">
         {stage === 'prologue' && (
-          <Prologue onStart={startNew} onContinue={savedGame ? continueGame : null} />
+          <Prologue
+            onStart={startNew}
+            onContinue={savedGame ? continueGame : null}
+            onOpenRecovery={() => setRecoveryModalMode('load')}
+          />
         )}
         {stage === 'chapter1' && (
           <Chapter1 onCollectEvidence={collectEvidence} onComplete={goToNext} />
@@ -89,8 +123,19 @@ export default function App() {
           <Investigation state={state} dispatch={dispatch} onComplete={goToNext} />
         )}
         {stage === 'thinkingBoard' && <ThinkingBoard onComplete={goToNext} />}
-        {stage === 'epilogue' && <Epilogue onRestart={restart} />}
+        {stage === 'epilogue' && (
+          <Epilogue onRestart={restart} onOpenRecovery={() => setRecoveryModalMode('get')} />
+        )}
       </main>
+
+      {recoveryModalMode && (
+        <RecoveryCodeModal
+          mode={recoveryModalMode}
+          state={state}
+          onLoadState={loadStateFromCloud}
+          onClose={() => setRecoveryModalMode(null)}
+        />
+      )}
     </div>
   );
 }

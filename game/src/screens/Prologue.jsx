@@ -1,4 +1,4 @@
-export default function Prologue({ onStart, onContinue }) {
+export default function Prologue({ onStart, onContinue, onOpenRecovery }) {
   return (
     <div className="chapter prologue chapter-enter">
       <h1>Buổi Livestream Cuối Cùng</h1>
@@ -36,6 +36,15 @@ export default function Prologue({ onStart, onContinue }) {
       <button className={onContinue ? 'btn-secondary' : 'btn-primary'} onClick={onStart}>
         {onContinue ? 'Bắt đầu lại từ đầu' : 'Bắt đầu điều tra →'}
       </button>
+
+      {!onContinue && (
+        <p className="hint" style={{ marginTop: '1.5em' }}>
+          Đã chơi trên máy khác rồi?{' '}
+          <button className="btn-link" onClick={onOpenRecovery}>
+            Nhập mã khôi phục
+          </button>
+        </p>
+      )}
     </div>
   );
 }
