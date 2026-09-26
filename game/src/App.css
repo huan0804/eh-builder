@@ -233,6 +233,32 @@ body {
   border-color: var(--accent);
 }
 
+.interview-header {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.character-portrait,
+.character-portrait-fallback {
+  width: 64px;
+  height: 64px;
+  border-radius: 12px;
+  object-fit: cover;
+  border: 1px solid var(--border);
+  flex-shrink: 0;
+}
+
+.character-portrait-fallback {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.character-portrait-icon {
+  font-size: 1.8rem;
+}
+
 .board-slots {
   display: flex;
   flex-direction: column;
@@ -533,8 +559,8 @@ button.evidence-item:focus-visible,
 
 .cold-open {
   background: #16140f;
-  border-radius: 12px;
-  min-height: 420px;
+  width: 100vw;
+  height: 100vh;
   display: flex;
   flex-direction: column;
   align-items: center;

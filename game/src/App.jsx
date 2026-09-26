@@ -103,16 +103,11 @@ export default function App() {
 
   const { stage } = state;
 
-  // Cảnh mở đầu season che toàn bộ phần còn lại — không có header/thanh tiến trình,
-  // đúng không khí "màn hình đen" của kịch bản (docs/phan-1-script.md mục 1b).
+  // Cảnh mở đầu season che TOÀN BỘ viewport — không có header/thanh tiến trình, không bị
+  // giới hạn bởi max-width của .game-container (đó là khung đọc cho các màn chơi thường,
+  // ColdOpen cần đúng không khí "màn hình đen" phủ kín màn hình, xem phan-1-script.md mục 1b).
   if (!coldOpenDone) {
-    return (
-      <div className="game-container">
-        <main className="game-main">
-          <ColdOpen data={data} onDone={finishColdOpen} alreadySeen={coldOpenAlreadySeen} />
-        </main>
-      </div>
-    );
+    return <ColdOpen data={data} onDone={finishColdOpen} alreadySeen={coldOpenAlreadySeen} />;
   }
 
   return (

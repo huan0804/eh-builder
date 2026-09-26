@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import EvidenceInventory from '../components/EvidenceInventory';
 import RewardedAdModal from '../components/RewardedAdModal';
+import CharacterPortrait from '../components/CharacterPortrait';
 
 // Gộp Chương 2-3 (mọi phần): phỏng vấn nhiều nghi phạm + thu thập chứng cứ bổ sung +
 // 2-3 giả thuyết song song. Giả thuyết chỉ bị loại khi người chơi tự CHỌN đúng tổ hợp
@@ -211,20 +212,25 @@ export default function Investigation({ data, state, dispatch, onComplete }) {
         />
 
         <div className="interview-panel">
-          <h3>🗣️ Phỏng vấn</h3>
-          <div className="suspect-tabs">
-            {suspectOrder.map((id) => (
-              <button
-                key={id}
-                className={activeSuspect === id ? 'tab active' : 'tab'}
-                onClick={() => {
-                  setActiveSuspect(id);
-                  setWrongReply(null);
-                }}
-              >
-                {characters[id].name}
-              </button>
-            ))}
+          <div className="interview-header">
+            <CharacterPortrait character={characters[activeSuspect]} emotion={currentNode.emotion} />
+            <div>
+              <h3 style={{ margin: 0 }}>🗣️ Phỏng vấn {characters[activeSuspect].name}</h3>
+              <div className="suspect-tabs" style={{ marginTop: '0.4rem', marginBottom: 0 }}>
+                {suspectOrder.map((id) => (
+                  <button
+                    key={id}
+                    className={activeSuspect === id ? 'tab active' : 'tab'}
+                    onClick={() => {
+                      setActiveSuspect(id);
+                      setWrongReply(null);
+                    }}
+                  >
+                    {characters[id].name}
+                  </button>
+                ))}
+              </div>
+            </div>
           </div>
 
           {/* Nhật ký hội thoại (như dialog log của Monogatari): giữ lại mọi câu đã hỏi,

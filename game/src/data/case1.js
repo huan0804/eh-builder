@@ -13,13 +13,29 @@ export const meta = {
   thinkingBoardChapterTitle: 'Chương 4 — Kết luận Phần 1',
 };
 
+// `portraits`: map emotion → tên file ảnh trong game/src/assets/portraits/<suspectId>/<emotion>.png.
+// Ảnh CHƯA tồn tại (chờ tạo bằng AI theo docs/portrait-prompts.md) — CharacterPortrait.jsx tự
+// fallback về khung màu + icon khi ảnh chưa có, không phá UI. Nghi phạm nào không khai báo
+// `portraits` thì luôn hiện fallback (vd Lam/Cô Hạnh/Vy — chưa cần ảnh vì không bị phỏng vấn).
 export const characters = {
   lam: { name: 'Lam', role: 'Nhân vật chính (bạn)' },
   coHanh: { name: 'Cô Hạnh', role: 'GVCN kiêm chủ nhiệm CLB Ống Kính' },
   vy: { name: 'Vy', role: 'Người mất tích' },
-  khang: { name: 'Khang', role: 'Thủ quỹ nhóm ôn thi' },
-  chi: { name: 'Chi', role: 'Thành viên nhóm ôn thi' },
-  duc: { name: 'Đức', role: 'Thành viên nhóm ôn thi' },
+  khang: {
+    name: 'Khang',
+    role: 'Thủ quỹ nhóm ôn thi',
+    portraits: { neutral: 'khang/neutral.png', nervous: 'khang/nervous.png', defensive: 'khang/defensive.png' },
+  },
+  chi: {
+    name: 'Chi',
+    role: 'Thành viên nhóm ôn thi',
+    portraits: { neutral: 'chi/neutral.png', nervous: 'chi/nervous.png', defensive: 'chi/defensive.png' },
+  },
+  duc: {
+    name: 'Đức',
+    role: 'Thành viên nhóm ôn thi',
+    portraits: { neutral: 'duc/neutral.png', nervous: 'duc/nervous.png', confession: 'duc/confession.png' },
+  },
 };
 
 // Nội dung màn Prologue — Prologue.jsx chỉ render, không còn chứa lời thoại cứng.
@@ -228,6 +244,7 @@ export const interviews = {
         reply: 'À... có, nhưng giải quyết xong rồi mà. Tao trả lại tiền cho Vy hôm thứ Ba rồi.',
         requiresEvidence: null,
         unlocksNext: 'afterMomo',
+        emotion: 'neutral',
       },
       {
         id: 'afterMomo',
@@ -237,6 +254,7 @@ export const interviews = {
           '...Vy còn giận vì tao giấu chuyện thiếu tiền cả tuần, dọa nói với cả nhóm là tao "không đáng tin". Tao có nhắn xin Vy đừng nói ra. Nhưng tối đó tao ngồi máy làm bài suốt, có nghỉ đâu. Mà cả nhóm ai chẳng biết mật khẩu tài khoản Vy, hay đăng nhập hộ nhau tải đề mà.',
         requiresEvidence: 'momoTransfer',
         unlocksNext: 'confrontGap',
+        emotion: 'nervous',
       },
       {
         id: 'confrontGap',
@@ -247,6 +265,7 @@ export const interviews = {
         requiresEvidence: 'schoolSystemLog',
         unlocksNext: null,
         unlocksEvidenceStep: 'whiteboardLog',
+        emotion: 'defensive',
       },
     ],
   },
@@ -260,6 +279,7 @@ export const interviews = {
           'Có... hồi đầu buổi, hỏi bài thôi. Chuyện đó không liên quan gì đến việc Vy mất tích đâu, đừng hỏi nữa được không?',
         requiresEvidence: null,
         unlocksNext: 'afterVoiceDraft',
+        emotion: 'neutral',
       },
       {
         id: 'afterVoiceDraft',
@@ -268,6 +288,7 @@ export const interviews = {
           'Được rồi... tao định tỏ tình với Vy qua tin nhắn thoại, nhưng không dám gửi, xóa đi rồi. Webcam tao bật suốt buổi mà, mọi người xem lại là thấy.',
         requiresEvidence: 'chiVoiceDraft',
         unlocksNext: 'confrontPhone',
+        emotion: 'nervous',
       },
       {
         id: 'confrontPhone',
@@ -277,6 +298,7 @@ export const interviews = {
           'Tao... mở lại đoạn ghi âm đó rồi xóa đi. Chỉ vậy thôi. Mày xem thông tin đồng bộ trên máy tao là thấy giờ xóa mà.',
         requiresEvidence: 'sessionRecording',
         unlocksNext: null,
+        emotion: 'defensive',
       },
     ],
   },
@@ -289,6 +311,7 @@ export const interviews = {
         reply: 'Vy vẫn bình thường mà, học hành, làm bài đầy đủ. Tao không thấy gì lạ cả.',
         requiresEvidence: null,
         unlocksNext: null, // Khóa cho đến khi A và B bị loại và trình đúng chứng cứ (xử lý trong Investigation)
+        emotion: 'neutral',
       },
       {
         id: 'confronted',
@@ -299,6 +322,7 @@ export const interviews = {
         requiresEvidence: null,
         unlocksNext: null,
         isFinalConfession: true,
+        emotion: 'confession',
       },
     ],
   },
