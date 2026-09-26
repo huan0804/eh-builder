@@ -1,0 +1,32 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 300 300" width="300" height="300">
+  <defs>
+    <linearGradient id="bgLt" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#d9e6e8"/>
+      <stop offset="100%" stop-color="#c0d4d8"/>
+    </linearGradient>
+    <linearGradient id="skinLt" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#f0c9a0"/>
+      <stop offset="100%" stop-color="#dba878"/>
+    </linearGradient>
+  </defs>
+  <rect width="300" height="300" fill="url(#bgLt)"/>
+  <path d="M60,300 Q60,215 150,205 Q240,215 240,300 Z" fill="#f5f2ea"/>
+  <path d="M100,300 L100,230 L150,250 L200,230 L200,300 Z" fill="#e0dccf"/>
+  <rect x="130" y="170" width="40" height="45" fill="url(#skinLt)"/>
+  <ellipse cx="150" cy="130" rx="60" ry="68" fill="url(#skinLt)"/>
+  <path d="M90,118 Q86,52 150,48 Q214,52 210,118 Q208,78 150,76 Q92,78 90,118 Z" fill="#2e2418"/>
+  <path d="M92,92 Q98,64 150,58 Q202,64 208,92 L200,78 Q150,68 100,78 Z" fill="#2e2418"/>
+  <ellipse cx="90" cy="133" rx="8.5" ry="13" fill="url(#skinLt)"/>
+  <ellipse cx="210" cy="133" rx="8.5" ry="13" fill="url(#skinLt)"/>
+  <!-- lông mày nhíu nhẹ, tập trung -->
+  <path d="M117,108 Q130,113 144,109" stroke="#2e2418" stroke-width="3.5" fill="none" stroke-linecap="round"/>
+  <path d="M156,109 Q170,113 183,108" stroke="#2e2418" stroke-width="3.5" fill="none" stroke-linecap="round"/>
+  <!-- mắt nhìn chếch lên (đang nghĩ) -->
+  <ellipse cx="126" cy="124" rx="6.5" ry="7.5" fill="#2e2418"/>
+  <ellipse cx="168" cy="124" rx="6.5" ry="7.5" fill="#2e2418"/>
+  <path d="M148,136 Q145,150 150,154" stroke="#c08a5c" stroke-width="3" fill="none" stroke-linecap="round"/>
+  <path d="M140,168 L160,166" stroke="#8a4a3a" stroke-width="3.5" fill="none" stroke-linecap="round"/>
+  <!-- tay chạm cằm -->
+  <path d="M180,190 Q195,175 190,155" stroke="url(#skinLt)" stroke-width="16" fill="none" stroke-linecap="round"/>
+  <ellipse cx="188" cy="152" rx="11" ry="13" fill="url(#skinLt)"/>
+</svg>

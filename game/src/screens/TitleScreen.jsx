@@ -1,13 +1,13 @@
 // Màn hình tền — trước cả ColdOpen, hiện MỖI LẦN mở game (không có cờ "đã xem" như
 // ColdOpen, vì đây là màn tền game bình thường, không phải cảnh cắt cảnh một lần).
-// Ảnh nền lấy từ src/assets/backgrounds/title.jpg nếu có (xem docs/portrait-prompts.md
+// Ảnh nền lấy từ src/assets/backgrounds/title.svg nếu có (xem docs/portrait-prompts.md
 // mục "Ảnh nền cảnh"), chưa có ảnh → fallback gradient cam-be khớp bảng màu UI.
 import { useState } from 'react';
 import { resolveBackgroundUrl } from '../lib/backgrounds';
 
 export default function TitleScreen({ onStart }) {
   const [imgError, setImgError] = useState(false);
-  const bgUrl = resolveBackgroundUrl('title.jpg');
+  const bgUrl = resolveBackgroundUrl('title.svg');
   const hasBg = bgUrl && !imgError;
 
   return (

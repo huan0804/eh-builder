@@ -16,7 +16,11 @@ const EMOTION_FALLBACK = {
 
 // Vite: import.meta.glob nạp trước mọi ảnh có thật trong thư mục portraits (nếu có), để
 // biết ảnh đã tồn tại hay chưa mà không cần thử tải rồi bắt lỗi 404 (tránh nhấp nháy layout).
-const portraitModules = import.meta.glob('../assets/portraits/**/*.png', { eager: true, query: '?url', import: 'default' });
+const portraitModules = import.meta.glob('../assets/portraits/**/*.{png,jpg,jpeg,svg}', {
+  eager: true,
+  query: '?url',
+  import: 'default',
+});
 
 function resolvePortraitUrl(relativePath) {
   const key = `../assets/portraits/${relativePath}`;

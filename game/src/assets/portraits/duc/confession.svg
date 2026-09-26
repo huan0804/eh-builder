@@ -1,0 +1,33 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 300 300" width="300" height="300">
+  <defs>
+    <linearGradient id="bgDc" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#e0d4e8"/>
+      <stop offset="100%" stop-color="#c9b8d8"/>
+    </linearGradient>
+    <linearGradient id="skinDc" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#e8bc90"/>
+      <stop offset="100%" stop-color="#cf9c6c"/>
+    </linearGradient>
+  </defs>
+  <rect width="300" height="300" fill="url(#bgDc)"/>
+  <path d="M60,300 Q60,215 150,205 Q240,215 240,300 Z" fill="#f0ece0"/>
+  <path d="M100,300 L100,230 L150,250 L200,230 L200,300 Z" fill="#dcd6c4"/>
+  <!-- đầu hơi cúi xuống (confession) -->
+  <g transform="rotate(6 150 150)">
+    <rect x="130" y="170" width="40" height="45" fill="url(#skinDc)"/>
+    <ellipse cx="150" cy="134" rx="63" ry="70" fill="url(#skinDc)"/>
+    <path d="M86,122 Q80,54 150,49 Q220,54 214,122 Q212,79 150,76 Q88,79 86,122 Z" fill="#1c1712"/>
+    <path d="M90,94 Q98,64 150,59 Q202,64 210,94 L200,79 Q150,68 100,79 Z" fill="#1c1712"/>
+    <ellipse cx="88" cy="139" rx="9" ry="14" fill="url(#skinDc)"/>
+    <ellipse cx="212" cy="139" rx="9" ry="14" fill="url(#skinDc)"/>
+    <!-- lông mày hạ thấp, buồn -->
+    <path d="M116,122 Q129,126 143,124" stroke="#1c1712" stroke-width="4" fill="none" stroke-linecap="round"/>
+    <path d="M157,124 Q171,126 184,122" stroke="#1c1712" stroke-width="4" fill="none" stroke-linecap="round"/>
+    <!-- mắt nhìn xuống, khép hờ -->
+    <path d="M121,136 Q129,140 137,136" stroke="#1c1712" stroke-width="4" fill="none" stroke-linecap="round"/>
+    <path d="M163,136 Q171,140 179,136" stroke="#1c1712" stroke-width="4" fill="none" stroke-linecap="round"/>
+    <path d="M148,145 Q145,159 150,164" stroke="#b07a4c" stroke-width="3" fill="none" stroke-linecap="round"/>
+    <!-- miệng thẳng, nặng nề nhưng nhẹ nhõm -->
+    <path d="M133,180 L167,180" stroke="#7a4030" stroke-width="4" stroke-linecap="round"/>
+  </g>
+</svg>

@@ -1,0 +1,30 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 300 300" width="300" height="300">
+  <defs>
+    <linearGradient id="bgD" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#e8ddc9"/>
+      <stop offset="100%" stop-color="#d8c9a8"/>
+    </linearGradient>
+    <linearGradient id="skinD" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#e8bc90"/>
+      <stop offset="100%" stop-color="#cf9c6c"/>
+    </linearGradient>
+  </defs>
+  <rect width="300" height="300" fill="url(#bgD)"/>
+  <path d="M60,300 Q60,215 150,205 Q240,215 240,300 Z" fill="#f0ece0"/>
+  <path d="M100,300 L100,230 L150,250 L200,230 L200,300 Z" fill="#dcd6c4"/>
+  <rect x="130" y="170" width="40" height="45" fill="url(#skinD)"/>
+  <ellipse cx="150" cy="130" rx="63" ry="70" fill="url(#skinD)"/>
+  <!-- tóc rối nhẹ, dày -->
+  <path d="M86,118 Q80,50 150,45 Q220,50 214,118 Q212,75 150,72 Q88,75 86,118 Z" fill="#1c1712"/>
+  <path d="M90,90 Q98,60 150,55 Q202,60 210,90 L200,75 Q150,64 100,75 Z" fill="#1c1712"/>
+  <path d="M95,80 L105,65 M150,58 L150,48 M200,80 L192,65" stroke="#1c1712" stroke-width="6" stroke-linecap="round"/>
+  <ellipse cx="88" cy="135" rx="9" ry="14" fill="url(#skinD)"/>
+  <ellipse cx="212" cy="135" rx="9" ry="14" fill="url(#skinD)"/>
+  <!-- vẻ mặt bình tĩnh, dễ chịu -->
+  <path d="M116,113 Q129,108 143,112" stroke="#1c1712" stroke-width="4" fill="none" stroke-linecap="round"/>
+  <path d="M157,112 Q171,108 184,113" stroke="#1c1712" stroke-width="4" fill="none" stroke-linecap="round"/>
+  <ellipse cx="129" cy="129" rx="7" ry="7.5" fill="#1c1712"/>
+  <ellipse cx="171" cy="129" rx="7" ry="7.5" fill="#1c1712"/>
+  <path d="M148,137 Q145,151 150,156" stroke="#b07a4c" stroke-width="3" fill="none" stroke-linecap="round"/>
+  <path d="M130,169 Q150,177 170,169" stroke="#7a4030" stroke-width="4" fill="none" stroke-linecap="round"/>
+</svg>

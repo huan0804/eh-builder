@@ -1,0 +1,36 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 300 300" width="300" height="300">
+  <defs>
+    <linearGradient id="bgK" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#e8ddc9"/>
+      <stop offset="100%" stop-color="#d8c9a8"/>
+    </linearGradient>
+    <linearGradient id="skinK" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#f0c9a0"/>
+      <stop offset="100%" stop-color="#dba878"/>
+    </linearGradient>
+  </defs>
+  <rect width="300" height="300" fill="url(#bgK)"/>
+  <!-- vai áo sơ mi trắng -->
+  <path d="M60,300 Q60,215 150,205 Q240,215 240,300 Z" fill="#f5f2ea"/>
+  <path d="M100,300 L100,230 L150,250 L200,230 L200,300 Z" fill="#e0dccf"/>
+  <!-- cổ -->
+  <rect x="130" y="170" width="40" height="45" fill="url(#skinK)"/>
+  <!-- đầu -->
+  <ellipse cx="150" cy="130" rx="62" ry="70" fill="url(#skinK)"/>
+  <!-- tóc ngắn gọn -->
+  <path d="M88,120 Q84,55 150,50 Q216,55 212,120 Q210,80 150,78 Q90,80 88,120 Z" fill="#2a2018"/>
+  <path d="M90,95 Q95,65 150,60 Q205,65 210,95 L205,80 Q150,68 95,80 Z" fill="#2a2018"/>
+  <!-- tai -->
+  <ellipse cx="90" cy="135" rx="9" ry="14" fill="url(#skinK)"/>
+  <ellipse cx="210" cy="135" rx="9" ry="14" fill="url(#skinK)"/>
+  <!-- lông mày bình thường -->
+  <path d="M115,112 Q128,106 142,111" stroke="#2a2018" stroke-width="4" fill="none" stroke-linecap="round"/>
+  <path d="M158,111 Q172,106 185,112" stroke="#2a2018" stroke-width="4" fill="none" stroke-linecap="round"/>
+  <!-- mắt bình thường -->
+  <ellipse cx="128" cy="128" rx="7" ry="8" fill="#2a2018"/>
+  <ellipse cx="172" cy="128" rx="7" ry="8" fill="#2a2018"/>
+  <!-- mũi -->
+  <path d="M148,135 Q145,150 150,155" stroke="#c08a5c" stroke-width="3" fill="none" stroke-linecap="round"/>
+  <!-- miệng thoải mái -->
+  <path d="M132,168 Q150,175 168,168" stroke="#8a4a3a" stroke-width="4" fill="none" stroke-linecap="round"/>
+</svg>

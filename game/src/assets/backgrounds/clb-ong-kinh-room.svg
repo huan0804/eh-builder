@@ -1,0 +1,121 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1600 900" width="1600" height="900">
+  <defs>
+    <linearGradient id="sky" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#f4c98a"/>
+      <stop offset="55%" stop-color="#e8a866"/>
+      <stop offset="100%" stop-color="#c97d4a"/>
+    </linearGradient>
+    <linearGradient id="wall" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#4a3b2e"/>
+      <stop offset="100%" stop-color="#2e2419"/>
+    </linearGradient>
+    <linearGradient id="floor" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#3c2f24"/>
+      <stop offset="100%" stop-color="#231b14"/>
+    </linearGradient>
+    <linearGradient id="deskTop" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#8a6a4a"/>
+      <stop offset="100%" stop-color="#6b4f37"/>
+    </linearGradient>
+    <radialGradient id="sunGlow" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="#ffe4b0" stop-opacity="0.9"/>
+      <stop offset="100%" stop-color="#ffe4b0" stop-opacity="0"/>
+    </radialGradient>
+    <linearGradient id="screenGlow" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#bfe8f0"/>
+      <stop offset="100%" stop-color="#7fb8c8"/>
+    </linearGradient>
+  </defs>
+
+  <!-- Tường phòng -->
+  <rect width="1600" height="900" fill="url(#wall)"/>
+
+  <!-- Sàn -->
+  <rect x="0" y="640" width="1600" height="260" fill="url(#floor)"/>
+
+  <!-- Cửa sổ lớn bên trái, ánh chiều tà rọi vào -->
+  <g>
+    <rect x="60" y="120" width="440" height="480" rx="6" fill="url(#sky)"/>
+    <circle cx="280" cy="330" r="150" fill="url(#sunGlow)"/>
+    <!-- khung cửa sổ -->
+    <rect x="60" y="120" width="440" height="480" rx="6" fill="none" stroke="#1c140e" stroke-width="14"/>
+    <line x1="280" y1="120" x2="280" y2="600" stroke="#1c140e" stroke-width="10"/>
+    <line x1="60" y1="360" x2="500" y2="360" stroke="#1c140e" stroke-width="10"/>
+    <!-- rèm lá sách nhẹ -->
+    <g opacity="0.25">
+      <rect x="60" y="140" width="440" height="8" fill="#1c140e"/>
+      <rect x="60" y="180" width="440" height="8" fill="#1c140e"/>
+      <rect x="60" y="220" width="440" height="8" fill="#1c140e"/>
+      <rect x="60" y="260" width="440" height="8" fill="#1c140e"/>
+    </g>
+  </g>
+
+  <!-- Vệt sáng chiếu chéo qua phòng -->
+  <polygon points="500,120 900,120 700,900 300,900" fill="#ffdca0" opacity="0.10"/>
+  <polygon points="500,120 620,120 460,900 340,900" fill="#ffdca0" opacity="0.08"/>
+
+  <!-- Kệ thiết bị CLB bên phải -->
+  <g>
+    <rect x="1220" y="180" width="320" height="420" fill="#3a2c20" stroke="#1c140e" stroke-width="6"/>
+    <line x1="1220" y1="320" x2="1540" y2="320" stroke="#1c140e" stroke-width="6"/>
+    <line x1="1220" y1="460" x2="1540" y2="460" stroke="#1c140e" stroke-width="6"/>
+    <!-- máy quay trên kệ -->
+    <rect x="1260" y="220" width="90" height="60" rx="6" fill="#151515"/>
+    <circle cx="1260" cy="250" r="22" fill="#0b0b0b"/>
+    <circle cx="1260" cy="250" r="12" fill="#2a2a2a"/>
+    <!-- ổ cứng / thẻ nhớ hộp -->
+    <rect x="1380" y="240" width="60" height="40" rx="4" fill="#5a4632"/>
+    <rect x="1450" y="235" width="50" height="45" rx="4" fill="#4a3a28"/>
+    <!-- sách/tài liệu -->
+    <rect x="1260" y="370" width="18" height="70" fill="#a2543a"/>
+    <rect x="1282" y="365" width="18" height="75" fill="#7a8a5a"/>
+    <rect x="1304" y="375" width="18" height="65" fill="#c9a24a"/>
+  </g>
+
+  <!-- Bàn dựng phim ở giữa -->
+  <g>
+    <rect x="520" y="560" width="620" height="24" fill="url(#deskTop)"/>
+    <rect x="550" y="584" width="24" height="180" fill="#4a3a28"/>
+    <rect x="1060" y="584" width="24" height="180" fill="#4a3a28"/>
+
+    <!-- Laptop mở, màn hình sáng (đang xem lại bản ghi) -->
+    <g transform="translate(640,470)">
+      <polygon points="0,90 220,90 200,20 20,20" fill="#2a2018"/>
+      <rect x="20" y="-70" width="180" height="92" rx="4" fill="#1a1310"/>
+      <rect x="30" y="-60" width="160" height="72" rx="2" fill="url(#screenGlow)"/>
+      <rect x="40" y="-50" width="60" height="6" fill="#2e4a55" opacity="0.6"/>
+      <rect x="40" y="-38" width="100" height="6" fill="#2e4a55" opacity="0.5"/>
+      <rect x="40" y="-26" width="80" height="6" fill="#2e4a55" opacity="0.5"/>
+    </g>
+
+    <!-- Tai nghe đặt cạnh laptop -->
+    <g transform="translate(900,540)">
+      <path d="M0,0 a40,40 0 0 1 80,0" fill="none" stroke="#1c140e" stroke-width="8"/>
+      <ellipse cx="0" cy="6" rx="14" ry="20" fill="#2a2018"/>
+      <ellipse cx="80" cy="6" rx="14" ry="20" fill="#2a2018"/>
+    </g>
+
+    <!-- Cốc + giấy tờ -->
+    <rect x="1000" y="520" width="26" height="34" rx="3" fill="#c9a24a" opacity="0.8"/>
+    <rect x="770" y="540" width="70" height="46" rx="2" fill="#e8dcc4" transform="rotate(-4 805 563)"/>
+  </g>
+
+  <!-- Ghế -->
+  <g opacity="0.85">
+    <rect x="720" y="640" width="16" height="140" fill="#2a2018"/>
+    <rect x="880" y="640" width="16" height="140" fill="#2a2018"/>
+    <rect x="690" y="600" width="120" height="20" rx="6" fill="#3a2c20"/>
+    <rect x="850" y="600" width="120" height="20" rx="6" fill="#3a2c20"/>
+  </g>
+
+  <!-- Poster CLB mờ trên tường -->
+  <rect x="1060" y="140" width="140" height="180" rx="4" fill="#5a4632" opacity="0.7"/>
+  <rect x="1080" y="160" width="100" height="60" fill="#8a6a4a" opacity="0.6"/>
+
+  <!-- Vignette tối 4 góc để chữ đè lên vẫn đọc được -->
+  <rect width="1600" height="900" fill="url(#vignette)"/>
+  <radialGradient id="vignette" cx="50%" cy="45%" r="75%">
+    <stop offset="55%" stop-color="#000000" stop-opacity="0"/>
+    <stop offset="100%" stop-color="#000000" stop-opacity="0.45"/>
+  </radialGradient>
+</svg>

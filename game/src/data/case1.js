@@ -21,28 +21,28 @@ export const characters = {
   lam: {
     name: 'Lam',
     role: 'Nhân vật chính (bạn)',
-    portraits: { neutral: 'lam/neutral.png', thinking: 'lam/thinking.png' },
+    portraits: { neutral: 'lam/neutral.svg', thinking: 'lam/thinking.svg' },
   },
   coHanh: {
     name: 'Cô Hạnh',
     role: 'GVCN kiêm chủ nhiệm CLB Ống Kính',
-    portraits: { neutral: 'coHanh/neutral.png', worried: 'coHanh/worried.png' },
+    portraits: { neutral: 'coHanh/neutral.svg', worried: 'coHanh/worried.svg' },
   },
   vy: { name: 'Vy', role: 'Người mất tích' },
   khang: {
     name: 'Khang',
     role: 'Thủ quỹ nhóm ôn thi',
-    portraits: { neutral: 'khang/neutral.png', nervous: 'khang/nervous.png', defensive: 'khang/defensive.png' },
+    portraits: { neutral: 'khang/neutral.svg', nervous: 'khang/nervous.svg', defensive: 'khang/defensive.svg' },
   },
   chi: {
     name: 'Chi',
     role: 'Thành viên nhóm ôn thi',
-    portraits: { neutral: 'chi/neutral.png', nervous: 'chi/nervous.png', defensive: 'chi/defensive.png' },
+    portraits: { neutral: 'chi/neutral.svg', nervous: 'chi/nervous.svg', defensive: 'chi/defensive.svg' },
   },
   duc: {
     name: 'Đức',
     role: 'Thành viên nhóm ôn thi',
-    portraits: { neutral: 'duc/neutral.png', nervous: 'duc/nervous.png', confession: 'duc/confession.png' },
+    portraits: { neutral: 'duc/neutral.svg', confession: 'duc/confession.svg' },
   },
 };
 
@@ -54,7 +54,7 @@ export const characters = {
 // (khác `speaker` cũ chỉ là tên hiển thị tự do — giữ `speaker` để hiện tên khi speakerId
 // trỏ tới một biến thể xưng hô khác, vd "Lam (nội tâm)" vẫn dùng portrait của `lam`).
 export const prologue = {
-  background: 'clb-ong-kinh-room.jpg',
+  background: 'clb-ong-kinh-room.svg',
   briefing: 'Phần 1 — Một vụ án dành cho CLB Ống Kính',
   innerThought:
     'Lam (nội tâm): "Quay phim thì dễ. Cái khó là biết cắt đoạn nào. Mà thôi — máy quay không nói dối, chỉ có người dựng là hay nói dối thôi."',
@@ -98,7 +98,7 @@ export const chatLog = [
 // Nội dung màn Chương 1 — Chapter1.jsx chỉ render, không còn chứa lời thoại cứng.
 // `steps`: 1 bước duy nhất kiểu 'search' (khớp hành vi gốc của Phần 1).
 export const chapter1 = {
-  background: 'clb-ong-kinh-room.jpg',
+  background: 'clb-ong-kinh-room.svg',
   title: 'Chương 1 — Buổi tối cuối cùng',
   briefing:
     'Tại phòng CLB, Lam xem lại bản ghi buổi học nhóm tối thứ Năm. Trên bàn là laptop và tai nghe mẹ Vy gửi cô Hạnh — những thứ Vy để lại ở nhà.',

@@ -2,7 +2,7 @@
 
 > Mục đích: tạo ảnh nhân vật kiểu Ace Attorney (chân dung bán thân tĩnh, đổi theo cảm xúc mỗi lượt hội thoại) để tăng cảm giác nhập vai — theo yêu cầu 09/2026, thay cho hướng 3D/thế giới mở (không khả thi với đội 1-2 người, xem `CLAUDE.md` mục 2).
 >
-> Engine đã sẵn sàng nhận ảnh (xem `game/src/components/CharacterPortrait.jsx`) — hiện đang fallback về khung màu + icon vì CHƯA có ảnh thật. Tạo ảnh theo hướng dẫn dưới đây bằng bất kỳ công cụ AI image nào (Midjourney, DALL-E, Gemini/Imagen, Stable Diffusion...), rồi lưu đúng đường dẫn ở mục "Nộp ảnh vào game".
+> **Trạng thái hiện tại (09/2026)**: Phần 1 đã có ảnh — nhưng là **SVG vector tự vẽ bằng code** (`game/src/assets/portraits/`, `game/src/assets/backgrounds/`), KHÔNG phải ảnh AI-generated photorealistic, vì phiên làm việc không có công cụ tạo ảnh AI khả dụng. Đây là giải pháp tạm để không còn giao diện toàn chữ; chất lượng thấp hơn ảnh AI-art theo prompt dưới đây. **Nếu có quyền dùng công cụ AI image (Midjourney/DALL-E/Gemini...), nên tạo lại theo prompt ở đây và THAY THẾ file SVG hiện tại** — engine không phân biệt SVG hay PNG/JPG (`import.meta.glob` nhận cả 2), chỉ cần đúng tên file đường dẫn.
 
 ---
 
@@ -114,28 +114,30 @@ Lưu vào `game/src/assets/backgrounds/<tên file>` — engine tự nhận qua `
 
 ---
 
-## 4. Nộp ảnh vào game
+## 4. Nộp ảnh vào game (thay ảnh SVG hiện tại bằng ảnh AI thật)
 
-1. Lưu ảnh portrait (PNG, nền trong suốt nếu công cụ hỗ trợ, hoặc nền trơn nếu không) đúng tên file:
-   ```
-   game/src/assets/portraits/khang/neutral.png
-   game/src/assets/portraits/khang/nervous.png
-   game/src/assets/portraits/khang/defensive.png
-   game/src/assets/portraits/chi/neutral.png
-   game/src/assets/portraits/chi/nervous.png
-   game/src/assets/portraits/chi/defensive.png
-   game/src/assets/portraits/duc/neutral.png
-   game/src/assets/portraits/duc/confession.png
-   game/src/assets/portraits/lam/neutral.png
-   game/src/assets/portraits/lam/thinking.png
-   game/src/assets/portraits/coHanh/neutral.png
-   game/src/assets/portraits/coHanh/worried.png
-   ```
-   (`duc/defensive.png` và `duc/nervous.png` KHÔNG cần vì Đức không có 2 node đó — đã khai báo đúng trong `case1.js`.)
-2. Lưu ảnh nền (JPG/PNG) đúng tên file: `game/src/assets/backgrounds/title.jpg`, `game/src/assets/backgrounds/clb-ong-kinh-room.jpg` (xem mục 3).
-3. Không cần sửa code gì thêm — `CharacterPortrait.jsx` và `lib/backgrounds.js` tự động dò thấy ảnh mới qua `import.meta.glob` và hiển thị thay cho khung fallback.
-4. Chạy `npm run dev`, kiểm tra TitleScreen → Prologue → Chương 1 → Investigation (phỏng vấn từng nghi phạm) để xác nhận ảnh hiện đúng theo từng ngữ cảnh/cảm xúc.
-5. Nếu ảnh bị méo/cắt sai, chỉnh CSS `.character-portrait`/`.portrait-small` (kích thước khung portrait) hoặc `.scene-bg`/`.title-screen-bg` (crop ảnh nền) trong `game/src/App.css` — không cần sửa ảnh gốc.
+Phần 1 đã có sẵn 12 file portrait (`.svg`, tự vẽ) đúng các đường dẫn dưới đây — để thay bằng ảnh AI thật, tạo ảnh mới (PNG/JPG, nền trong suốt nếu công cụ hỗ trợ) rồi **ghi đè đúng tên file cũ** (xoá phần mở rộng `.svg`, thêm `.png`/`.jpg` — engine đọc theo tên file khai báo trong `characters.portraits` ở `case1.js`, đổi định dạng thì phải sửa lại đuôi file trong đó luôn):
+
+```
+game/src/assets/portraits/khang/neutral.svg   (→ có thể thay .png/.jpg)
+game/src/assets/portraits/khang/nervous.svg
+game/src/assets/portraits/khang/defensive.svg
+game/src/assets/portraits/chi/neutral.svg
+game/src/assets/portraits/chi/nervous.svg
+game/src/assets/portraits/chi/defensive.svg
+game/src/assets/portraits/duc/neutral.svg
+game/src/assets/portraits/duc/confession.svg
+game/src/assets/portraits/lam/neutral.svg
+game/src/assets/portraits/lam/thinking.svg
+game/src/assets/portraits/coHanh/neutral.svg
+game/src/assets/portraits/coHanh/worried.svg
+```
+
+Tương tự ảnh nền: `game/src/assets/backgrounds/title.svg`, `game/src/assets/backgrounds/clb-ong-kinh-room.svg` (đổi đuôi trong `case1.js`/`TitleScreen.jsx` nếu thay bằng JPG/PNG).
+
+1. `CharacterPortrait.jsx` và `lib/backgrounds.js` tự động dò thấy ảnh qua `import.meta.glob` — nếu giữ đúng tên/đuôi file `.svg` cũ, chỉ cần ghi đè nội dung file, không cần sửa code hay data gì thêm. Nếu đổi đuôi file, cập nhật lại path tương ứng trong `case1.js`.
+2. Chạy `npm run dev`, kiểm tra TitleScreen → Prologue → Chương 1 → Investigation (phỏng vấn từng nghi phạm) để xác nhận ảnh hiện đúng theo từng ngữ cảnh/cảm xúc.
+3. Nếu ảnh bị méo/cắt sai, chỉnh CSS `.character-portrait`/`.portrait-small` (kích thước khung portrait) hoặc `.scene-bg`/`.title-screen-bg` (crop ảnh nền) trong `game/src/App.css` — không cần sửa ảnh gốc.
 
 ## 5. Mở rộng cho Phần 2, Phần 3 (sau khi Phần 1 ổn)
 

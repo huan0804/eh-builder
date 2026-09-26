@@ -1,0 +1,32 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 300 300" width="300" height="300">
+  <defs>
+    <linearGradient id="bgKd" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#f5d9c9"/>
+      <stop offset="100%" stop-color="#eab89e"/>
+    </linearGradient>
+    <linearGradient id="skinKd" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#f0c9a0"/>
+      <stop offset="100%" stop-color="#dba878"/>
+    </linearGradient>
+  </defs>
+  <rect width="300" height="300" fill="url(#bgKd)"/>
+  <!-- tay áo đưa lên phòng thủ nhẹ -->
+  <path d="M60,300 Q60,215 150,205 Q240,215 240,300 Z" fill="#f5f2ea"/>
+  <path d="M100,300 L100,230 L150,250 L200,230 L200,300 Z" fill="#e0dccf"/>
+  <ellipse cx="70" cy="235" rx="28" ry="18" fill="#f5f2ea" transform="rotate(-25 70 235)"/>
+  <rect x="130" y="170" width="40" height="45" fill="url(#skinKd)"/>
+  <ellipse cx="150" cy="130" rx="62" ry="70" fill="url(#skinKd)"/>
+  <path d="M88,120 Q84,55 150,50 Q216,55 212,120 Q210,80 150,78 Q90,80 88,120 Z" fill="#2a2018"/>
+  <path d="M90,95 Q95,65 150,60 Q205,65 210,95 L205,80 Q150,68 95,80 Z" fill="#2a2018"/>
+  <ellipse cx="90" cy="135" rx="9" ry="14" fill="url(#skinKd)"/>
+  <ellipse cx="210" cy="135" rx="9" ry="14" fill="url(#skinKd)"/>
+  <!-- lông mày nhíu, cau có -->
+  <path d="M113,110 Q128,116 144,109" stroke="#2a2018" stroke-width="5" fill="none" stroke-linecap="round"/>
+  <path d="M158,109 Q172,116 187,110" stroke="#2a2018" stroke-width="5" fill="none" stroke-linecap="round"/>
+  <ellipse cx="128" cy="130" rx="7" ry="7" fill="#2a2018"/>
+  <ellipse cx="172" cy="130" rx="7" ry="7" fill="#2a2018"/>
+  <path d="M148,138 Q145,152 150,157" stroke="#c08a5c" stroke-width="3" fill="none" stroke-linecap="round"/>
+  <!-- miệng mím, đang biện minh -->
+  <path d="M128,172 Q150,178 172,172" stroke="#8a4a3a" stroke-width="5" fill="none" stroke-linecap="round"/>
+  <path d="M138,172 L162,172" stroke="#8a4a3a" stroke-width="2" opacity="0.5"/>
+</svg>
