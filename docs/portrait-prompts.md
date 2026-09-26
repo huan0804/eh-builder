@@ -74,11 +74,49 @@ viewer, wearing plain white school uniform shirt, plain solid warm-toned backgro
 style, square aspect ratio, no text, no logos
 ```
 
+### Lam và Cô Hạnh — dùng ở Prologue/Chương 1 (2 ảnh mỗi người)
+
+Hai nhân vật này KHÔNG bị phỏng vấn ở Investigation, nhưng xuất hiện xuyên suốt Prologue với portrait nhỏ cạnh mỗi dòng thoại (xem `game/src/screens/Prologue.jsx`).
+
+**Lam** — nhân vật chính, cố ý giữ ngoại hình/giới tính trung tính (xem `docs/story-bible.md` mục 2 — không dùng đại từ "anh ấy/cô ấy" cho Lam ở bất kỳ đâu, kể cả mô tả ảnh): tóc ngắn gọn kiểu unisex, ánh mắt quan sát/điềm tĩnh.
+
+| Trạng thái | Khi nào dùng | Mô tả cảm xúc |
+|---|---|---|
+| `neutral` | Mặc định | `calm observant expression, composed` |
+| `thinking` | Khi Lam đang suy luận/nội tâm | `thoughtful expression, slight frown of concentration, hand near chin` |
+
+**Cô Hạnh** — GVCN, người lớn đáng tin cậy, ăn mặc chỉn chu kiểu giáo viên (áo sơ mi/blazer nhẹ, không đồng phục học sinh).
+
+| Trạng thái | Khi nào dùng | Mô tả cảm xúc |
+|---|---|---|
+| `neutral` | Mặc định | `warm calm expression, professional but caring` |
+| `worried` | Khi lo lắng cho học sinh mất tích | `concerned worried expression, slight furrowed brow` |
+
 ---
 
-## 3. Nộp ảnh vào game
+## 3. Ảnh nền cảnh (background)
 
-1. Lưu ảnh (PNG, nền trong suốt nếu công cụ hỗ trợ, hoặc nền trơn nếu không) đúng tên file:
+Dùng cho `TitleScreen`, `Prologue`, `Chapter1` (field `background` trong data, xem `game/src/lib/backgrounds.js`) — khác hẳn portrait nhân vật: đây là ảnh TOÀN CẢNH (không có nhân vật rõ mặt ở tiền cảnh, hoặc nếu có thì mờ/xa), dùng làm nền mờ phía sau chữ.
+
+**Style guide riêng cho ảnh nền** (khác portrait):
+- Phong cách: cùng họ semi-realistic/webtoon với portrait, nhưng vẽ KHÔNG GIAN thay vì nhân vật.
+- Ánh sáng: ấm, hơi hoài niệm (giờ chiều muộn/tối trong phòng học) — khớp tông "cozy mystery" của game.
+- Độ chi tiết: vừa phải — ảnh sẽ bị làm mờ/tối thêm bởi overlay CSS (không cần quá sắc nét, tránh chi tiết nhỏ dễ bị che mất).
+- Tỷ lệ: 16:9 hoặc rộng hơn (ảnh sẽ bị crop theo `object-fit: cover`).
+- KHÔNG có văn bản/chữ trong ảnh (chữ thật sẽ đè lên bằng UI).
+
+| File | Dùng ở | Prompt gợi ý |
+|---|---|---|
+| `title.jpg` | `TitleScreen` | `Wide cinematic semi-realistic illustration of an empty Vietnamese high school hallway at dusk, warm golden light through windows, a video camera resting on a table in foreground blurred, moody atmospheric lighting, no people, no text, 16:9` |
+| `clb-ong-kinh-room.jpg` | `Prologue`, `Chapter1` (Phần 1) | `Wide semi-realistic illustration of a small Vietnamese high school media club room, desks with old computers and video editing equipment, laptop open on a desk, warm afternoon light through window blinds, cozy but slightly messy, no people visible, no text, 16:9` |
+
+Lưu vào `game/src/assets/backgrounds/<tên file>` — engine tự nhận qua `import.meta.glob`, không cần sửa code.
+
+---
+
+## 4. Nộp ảnh vào game
+
+1. Lưu ảnh portrait (PNG, nền trong suốt nếu công cụ hỗ trợ, hoặc nền trơn nếu không) đúng tên file:
    ```
    game/src/assets/portraits/khang/neutral.png
    game/src/assets/portraits/khang/nervous.png
@@ -88,13 +126,18 @@ style, square aspect ratio, no text, no logos
    game/src/assets/portraits/chi/defensive.png
    game/src/assets/portraits/duc/neutral.png
    game/src/assets/portraits/duc/confession.png
+   game/src/assets/portraits/lam/neutral.png
+   game/src/assets/portraits/lam/thinking.png
+   game/src/assets/portraits/coHanh/neutral.png
+   game/src/assets/portraits/coHanh/worried.png
    ```
    (`duc/defensive.png` và `duc/nervous.png` KHÔNG cần vì Đức không có 2 node đó — đã khai báo đúng trong `case1.js`.)
-2. Không cần sửa code gì thêm — `CharacterPortrait.jsx` tự động dò thấy ảnh mới qua `import.meta.glob` và hiển thị thay cho khung fallback.
-3. Chạy `npm run dev`, mở Investigation, phỏng vấn từng nghi phạm để kiểm tra ảnh hiện đúng theo từng câu hỏi.
-4. Nếu ảnh bị méo/cắt sai trong khung 64×64px hiện tại, có thể chỉnh CSS `.character-portrait` trong `game/src/App.css` (kích thước khung ảnh) — không cần sửa ảnh gốc.
+2. Lưu ảnh nền (JPG/PNG) đúng tên file: `game/src/assets/backgrounds/title.jpg`, `game/src/assets/backgrounds/clb-ong-kinh-room.jpg` (xem mục 3).
+3. Không cần sửa code gì thêm — `CharacterPortrait.jsx` và `lib/backgrounds.js` tự động dò thấy ảnh mới qua `import.meta.glob` và hiển thị thay cho khung fallback.
+4. Chạy `npm run dev`, kiểm tra TitleScreen → Prologue → Chương 1 → Investigation (phỏng vấn từng nghi phạm) để xác nhận ảnh hiện đúng theo từng ngữ cảnh/cảm xúc.
+5. Nếu ảnh bị méo/cắt sai, chỉnh CSS `.character-portrait`/`.portrait-small` (kích thước khung portrait) hoặc `.scene-bg`/`.title-screen-bg` (crop ảnh nền) trong `game/src/App.css` — không cần sửa ảnh gốc.
 
-## 4. Mở rộng cho Phần 2, Phần 3 (sau khi Phần 1 ổn)
+## 5. Mở rộng cho Phần 2, Phần 3 (sau khi Phần 1 ổn)
 
 Áp dụng đúng style guide ở mục 1, thêm `portraits` vào `characters` trong `case2.js`/`case3.js` theo mẫu `case1.js`, và thêm `emotion` vào từng node hội thoại tương ứng. Nhân vật cần ảnh:
 

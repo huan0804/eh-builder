@@ -56,6 +56,58 @@ body {
   border: 1px solid var(--border);
   border-radius: 12px;
   padding: 1.5rem;
+  position: relative;
+  overflow: hidden;
+}
+
+/* Ảnh nền cảnh (Prologue/Chapter1) — phủ toàn khung .chapter, làm tối/mờ để chữ vẫn đọc
+   được rõ, .scene-content nổi lên trên qua z-index. Chưa có ảnh → .chapter giữ nguyên nền
+   trơn cũ (không thêm class has-scene-bg, xem Prologue.jsx/Chapter1.jsx). */
+.chapter.has-scene-bg {
+  padding: 0;
+  border-radius: 12px;
+}
+
+.scene-bg {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  z-index: 0;
+}
+
+.chapter.has-scene-bg::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(180deg, rgba(253, 246, 236, 0.75) 0%, rgba(253, 246, 236, 0.94) 60%);
+  z-index: 0;
+}
+
+.scene-content {
+  position: relative;
+  z-index: 1;
+  padding: 1.5rem;
+}
+
+.dialogue-line-with-portrait {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.6rem;
+  margin: 0.6rem 0;
+}
+
+.portrait-small {
+  width: 40px;
+  height: 40px;
+  border-radius: 8px;
+  flex-shrink: 0;
+}
+
+.dialogue-line-text {
+  margin: 0;
+  flex: 1;
 }
 
 .briefing {
@@ -553,6 +605,90 @@ button.evidence-item:focus-visible,
   opacity: 1;
   border-bottom: none;
   margin-bottom: 0;
+}
+
+/* ---------- Màn hình tền (TitleScreen) ---------- */
+
+.title-screen {
+  width: 100vw;
+  height: 100vh;
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  /* Fallback khi chưa có ảnh nền: gradient cam-be đậm, khớp bảng màu UI nhưng kịch tính hơn */
+  background: radial-gradient(ellipse at 50% 30%, #3a2f24 0%, #1c1712 70%, #100d0a 100%);
+}
+
+.title-screen-bg {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  filter: brightness(0.55) saturate(0.9);
+}
+
+.title-screen-overlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(180deg, rgba(16, 13, 10, 0.2) 0%, rgba(16, 13, 10, 0.75) 100%);
+}
+
+.title-screen-content {
+  position: relative;
+  z-index: 1;
+  text-align: center;
+  color: #f5efe4;
+  max-width: 560px;
+  padding: 2rem 1.5rem;
+  animation: titleFadeIn 1s ease;
+}
+
+@keyframes titleFadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(16px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.title-screen-eyebrow {
+  letter-spacing: 0.15em;
+  font-size: 0.75rem;
+  color: var(--accent);
+  font-weight: 600;
+  margin: 0 0 0.75rem;
+}
+
+.title-screen-title {
+  font-size: 3rem;
+  margin: 0 0 1rem;
+  font-weight: 800;
+  text-shadow: 0 2px 20px rgba(0, 0, 0, 0.5);
+}
+
+.title-screen-tagline {
+  font-size: 1rem;
+  line-height: 1.6;
+  color: #d8d2c4;
+  margin: 0 0 2rem;
+}
+
+.title-screen-cta {
+  font-size: 1.05rem;
+  padding: 0.85rem 2.2rem;
+  box-shadow: 0 4px 24px rgba(217, 119, 87, 0.4);
+}
+
+@media (max-width: 600px) {
+  .title-screen-title {
+    font-size: 2.2rem;
+  }
 }
 
 /* ---------- Cảnh mở đầu season (ColdOpen) ---------- */

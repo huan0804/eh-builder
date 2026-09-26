@@ -10,6 +10,8 @@ const EMOTION_FALLBACK = {
   nervous: { icon: '😰', bg: '#fbe9c9' },
   defensive: { icon: '😤', bg: '#f5d9c9' },
   confession: { icon: '😔', bg: '#e0d4e8' },
+  thinking: { icon: '🤔', bg: '#d9e6e8' },
+  worried: { icon: '😟', bg: '#f0dbc9' },
 };
 
 // Vite: import.meta.glob nạp trước mọi ảnh có thật trong thư mục portraits (nếu có), để

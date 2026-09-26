@@ -1,4 +1,5 @@
 import { useEffect, useReducer, useState } from 'react';
+import TitleScreen from './screens/TitleScreen';
 import ColdOpen from './screens/ColdOpen';
 import Prologue from './screens/Prologue';
 import Chapter1 from './screens/Chapter1';
@@ -44,6 +45,9 @@ export default function App() {
   const [state, dispatch] = useReducer(gameReducer, undefined, () => createInitialState(data));
   // Save đọc MỘT lần lúc mở game; Prologue hiện nút "Chơi tiếp" nếu có
   const [savedGame, setSavedGame] = useState(() => loadAutosave(caseId));
+  // Màn hình tền — hiện MỖI LẦN mở game (không có cờ "đã xem" như ColdOpen), đứng trước cả
+  // ColdOpen. Bấm "Bắt đầu điều tra" chỉ tắt màn tền, KHÔNG đụng tới save/tiến trình.
+  const [titleScreenDone, setTitleScreenDone] = useState(false);
   // Cảnh mở đầu season đứng trước cả Prologue, độc lập với STAGES/save — xem gameState.js.
   // Một số phần (Phần 3 — xem case3.meta.hasColdOpen) không mở bằng cảnh này, xem thẳng Prologue.
   const hasColdOpen = data.meta.hasColdOpen !== false;
@@ -102,6 +106,11 @@ export default function App() {
   }
 
   const { stage } = state;
+
+  // Màn hình tền — điểm đầu tiên người chơi thấy khi mở game.
+  if (!titleScreenDone) {
+    return <TitleScreen onStart={() => setTitleScreenDone(true)} />;
+  }
 
   // Cảnh mở đầu season che TOÀN BỘ viewport — không có header/thanh tiến trình, không bị
   // giới hạn bởi max-width của .game-container (đó là khung đọc cho các màn chơi thường,

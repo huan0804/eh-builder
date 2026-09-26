@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import RewardedAdModal from '../components/RewardedAdModal';
+import { resolveBackgroundUrl } from '../lib/backgrounds';
 
 // Màn Chương 1 dùng chung cho mọi phần — nội dung lấy từ `data.chapter1`, screen chỉ render
 // (xem docs/engine-lessons.md). `data.chapter1.steps` là một danh sách bước TUẦN TỰ, mỗi bước
@@ -13,8 +14,11 @@ export default function Chapter1({ data, onCollectEvidence, onComplete }) {
   const { chapter1, chatLog } = data;
   const steps = chapter1.steps;
   const [stepIndex, setStepIndex] = useState(0);
+  const [bgError, setBgError] = useState(false);
 
   const isLastStep = stepIndex === steps.length - 1;
+  const bgUrl = resolveBackgroundUrl(chapter1.background);
+  const hasBg = bgUrl && !bgError;
 
   function goNextStep() {
     if (isLastStep) {
@@ -25,36 +29,41 @@ export default function Chapter1({ data, onCollectEvidence, onComplete }) {
   }
 
   return (
-    <div className="chapter chapter-enter">
-      <h2>{chapter1.title}</h2>
-      {stepIndex === 0 && <p className="briefing">{chapter1.briefing}</p>}
-
-      {chatLog && stepIndex === 0 && (
-        <div className="chat-log">
-          {chatLog.map((line, i) => (
-            <div
-              key={i}
-              className={line.who === 'system' ? 'chat-line system' : 'chat-line'}
-              style={{ animationDelay: `${i * 0.06}s` }}
-            >
-              <span className="chat-time">{line.time}</span>
-              {line.who !== 'system' && <strong> {line.who}: </strong>}
-              <span>{line.text}</span>
-            </div>
-          ))}
-        </div>
+    <div className={hasBg ? 'chapter chapter-enter has-scene-bg' : 'chapter chapter-enter'}>
+      {hasBg && (
+        <img className="scene-bg" src={bgUrl} alt="" aria-hidden="true" onError={() => setBgError(true)} />
       )}
+      <div className="scene-content">
+        <h2>{chapter1.title}</h2>
+        {stepIndex === 0 && <p className="briefing">{chapter1.briefing}</p>}
 
-      {/* key={stepIndex}: mỗi bước tự có state riêng (mã đang gõ, lỗi...) — đổi bước là
-          re-mount sạch, không cần effect reset state thủ công. */}
-      <Chapter1Step
-        key={stepIndex}
-        step={steps[stepIndex]}
-        isLastStep={isLastStep}
-        nextChapterLabel={chapter1.nextChapterLabel}
-        onCollectEvidence={onCollectEvidence}
-        onStepDone={goNextStep}
-      />
+        {chatLog && stepIndex === 0 && (
+          <div className="chat-log">
+            {chatLog.map((line, i) => (
+              <div
+                key={i}
+                className={line.who === 'system' ? 'chat-line system' : 'chat-line'}
+                style={{ animationDelay: `${i * 0.06}s` }}
+              >
+                <span className="chat-time">{line.time}</span>
+                {line.who !== 'system' && <strong> {line.who}: </strong>}
+                <span>{line.text}</span>
+              </div>
+            ))}
+          </div>
+        )}
+
+        {/* key={stepIndex}: mỗi bước tự có state riêng (mã đang gõ, lỗi...) — đổi bước là
+            re-mount sạch, không cần effect reset state thủ công. */}
+        <Chapter1Step
+          key={stepIndex}
+          step={steps[stepIndex]}
+          isLastStep={isLastStep}
+          nextChapterLabel={chapter1.nextChapterLabel}
+          onCollectEvidence={onCollectEvidence}
+          onStepDone={goNextStep}
+        />
+      </div>
     </div>
   );
 }

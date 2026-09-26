@@ -18,8 +18,16 @@ export const meta = {
 // fallback về khung màu + icon khi ảnh chưa có, không phá UI. Nghi phạm nào không khai báo
 // `portraits` thì luôn hiện fallback (vd Lam/Cô Hạnh/Vy — chưa cần ảnh vì không bị phỏng vấn).
 export const characters = {
-  lam: { name: 'Lam', role: 'Nhân vật chính (bạn)' },
-  coHanh: { name: 'Cô Hạnh', role: 'GVCN kiêm chủ nhiệm CLB Ống Kính' },
+  lam: {
+    name: 'Lam',
+    role: 'Nhân vật chính (bạn)',
+    portraits: { neutral: 'lam/neutral.png', thinking: 'lam/thinking.png' },
+  },
+  coHanh: {
+    name: 'Cô Hạnh',
+    role: 'GVCN kiêm chủ nhiệm CLB Ống Kính',
+    portraits: { neutral: 'coHanh/neutral.png', worried: 'coHanh/worried.png' },
+  },
   vy: { name: 'Vy', role: 'Người mất tích' },
   khang: {
     name: 'Khang',
@@ -39,18 +47,37 @@ export const characters = {
 };
 
 // Nội dung màn Prologue — Prologue.jsx chỉ render, không còn chứa lời thoại cứng.
+// `background`: tên file ảnh nền cảnh trong game/src/assets/backgrounds/<tên>.jpg (chưa tồn
+// tại — chờ tạo bằng AI, xem docs/portrait-prompts.md mục "Ảnh nền cảnh"). Chưa có ảnh →
+// TitleScreen/Prologue/Chapter1 tự fallback gradient, không phá layout.
+// `lines[].speakerId`: khoá trong `characters`, dùng để hiện portrait đúng người đang nói
+// (khác `speaker` cũ chỉ là tên hiển thị tự do — giữ `speaker` để hiện tên khi speakerId
+// trỏ tới một biến thể xưng hô khác, vd "Lam (nội tâm)" vẫn dùng portrait của `lam`).
 export const prologue = {
+  background: 'clb-ong-kinh-room.jpg',
   briefing: 'Phần 1 — Một vụ án dành cho CLB Ống Kính',
   innerThought:
     'Lam (nội tâm): "Quay phim thì dễ. Cái khó là biết cắt đoạn nào. Mà thôi — máy quay không nói dối, chỉ có người dựng là hay nói dối thôi."',
   lines: [
     {
       speaker: 'Cô Hạnh',
+      speakerId: 'coHanh',
+      emotion: 'worried',
       text:
         '"Lam này, con biết tin Vy lớp 11A2 chưa đến lớp sáng nay chứ? Gia đình đang rất lo, nhưng công an nói chưa đủ 24 tiếng nên chưa thể vào cuộc chính thức. CLB Ống Kính có quay lại buổi học nhóm tối qua đúng không? Mình xác minh trước, đỡ làm gia đình hoảng thêm nếu chưa chắc chắn. Mẹ Vy cũng gửi cô laptop, điện thoại và tai nghe Vy để lại — điện thoại thì khóa, nhưng laptop con xem được."',
     },
-    { speaker: 'Lam', text: '"Dạ, con sẽ xem lại bản ghi ạ. Cô cho con hỏi thêm vài bạn trong nhóm được không ạ?"' },
-    { speaker: 'Cô Hạnh', text: '"Được, nhưng hỏi han thôi, đừng làm quá lên. Có gì nghiêm trọng, báo cô ngay."' },
+    {
+      speaker: 'Lam',
+      speakerId: 'lam',
+      emotion: 'thinking',
+      text: '"Dạ, con sẽ xem lại bản ghi ạ. Cô cho con hỏi thêm vài bạn trong nhóm được không ạ?"',
+    },
+    {
+      speaker: 'Cô Hạnh',
+      speakerId: 'coHanh',
+      emotion: 'neutral',
+      text: '"Được, nhưng hỏi han thôi, đừng làm quá lên. Có gì nghiêm trọng, báo cô ngay."',
+    },
   ],
 };
 
@@ -71,6 +98,7 @@ export const chatLog = [
 // Nội dung màn Chương 1 — Chapter1.jsx chỉ render, không còn chứa lời thoại cứng.
 // `steps`: 1 bước duy nhất kiểu 'search' (khớp hành vi gốc của Phần 1).
 export const chapter1 = {
+  background: 'clb-ong-kinh-room.jpg',
   title: 'Chương 1 — Buổi tối cuối cùng',
   briefing:
     'Tại phòng CLB, Lam xem lại bản ghi buổi học nhóm tối thứ Năm. Trên bàn là laptop và tai nghe mẹ Vy gửi cô Hạnh — những thứ Vy để lại ở nhà.',
