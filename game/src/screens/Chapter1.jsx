@@ -1,61 +1,119 @@
 import { useState, useEffect } from 'react';
 import RewardedAdModal from '../components/RewardedAdModal';
-import { chatLog, chapter1Evidence } from '../data/case1';
 
-const STUCK_THRESHOLD_MS = 15000;
+// Màn Chương 1 dùng chung cho mọi phần — nội dung lấy từ `data.chapter1`, screen chỉ render
+// (xem docs/engine-lessons.md). `data.chapter1.steps` là một danh sách bước TUẦN TỰ, mỗi bước
+// một trong 3 kiểu:
+//   - 'search'    : một nút bấm trao chứng cứ (kiểu Phần 1 — kiểm tra laptop + tai nghe).
+//   - 'codeInput' : người chơi nhập mã (ví dụ mã tủ khóa) — đúng mã mới trao chứng cứ.
+//   - 'choice'    : người chơi chọn 1 trong N lựa chọn — chỉ lựa chọn đúng mới qua bước.
+// Mỗi bước xong mới hiện bước kế tiếp; bước cuối luôn có nút "Tiếp tục sang Chương kế".
+// Case chỉ có 1 bước 'search' (như case1) vẫn hoạt động y như bản gốc.
+export default function Chapter1({ data, onCollectEvidence, onComplete }) {
+  const { chapter1, chatLog } = data;
+  const steps = chapter1.steps;
+  const [stepIndex, setStepIndex] = useState(0);
 
-export default function Chapter1({ onCollectEvidence, onComplete }) {
-  const [foundEarbuds, setFoundEarbuds] = useState(false);
-  const [showHintButton, setShowHintButton] = useState(false);
-  const [showAdModal, setShowAdModal] = useState(false);
-  const [revealAnim, setRevealAnim] = useState(false);
+  const isLastStep = stepIndex === steps.length - 1;
 
-  useEffect(() => {
-    if (foundEarbuds) return;
-    const t = setTimeout(() => setShowHintButton(true), STUCK_THRESHOLD_MS);
-    return () => clearTimeout(t);
-  }, [foundEarbuds]);
-
-  function handleFindEarbuds() {
-    setFoundEarbuds(true);
-    setRevealAnim(true);
-    // Laptop, tai nghe (của Vy) + ảnh MoMo (thư mục nhóm) + ghi âm nháp của Chi (máy CLB)
-    chapter1Evidence.forEach(onCollectEvidence);
+  function goNextStep() {
+    if (isLastStep) {
+      onComplete();
+      return;
+    }
+    setStepIndex((i) => i + 1);
   }
 
   return (
     <div className="chapter chapter-enter">
-      <h2>Chương 1 — Buổi tối cuối cùng</h2>
-      <p className="briefing">
-        Tại phòng CLB, Lam xem lại bản ghi buổi học nhóm tối thứ Năm. Trên bàn là laptop và tai
-        nghe mẹ Vy gửi cô Hạnh — những thứ Vy để lại ở nhà.
-      </p>
+      <h2>{chapter1.title}</h2>
+      {stepIndex === 0 && <p className="briefing">{chapter1.briefing}</p>}
 
-      <div className="chat-log">
-        {chatLog.map((line, i) => (
-          <div
-            key={i}
-            className={line.who === 'system' ? 'chat-line system' : 'chat-line'}
-            style={{ animationDelay: `${i * 0.06}s` }}
-          >
-            <span className="chat-time">{line.time}</span>
-            {line.who !== 'system' && <strong> {line.who}: </strong>}
-            <span>{line.text}</span>
-          </div>
-        ))}
-      </div>
+      {chatLog && stepIndex === 0 && (
+        <div className="chat-log">
+          {chatLog.map((line, i) => (
+            <div
+              key={i}
+              className={line.who === 'system' ? 'chat-line system' : 'chat-line'}
+              style={{ animationDelay: `${i * 0.06}s` }}
+            >
+              <span className="chat-time">{line.time}</span>
+              {line.who !== 'system' && <strong> {line.who}: </strong>}
+              <span>{line.text}</span>
+            </div>
+          ))}
+        </div>
+      )}
 
-      <p className="dialogue-inner-thought">
-        <em>
-          Lam (nội tâm): "Cả buổi, khung hình của Vy chỉ là một màu đen. Không ai thấy Vy rời đi —
-          vì chẳng có gì để thấy."
-        </em>
-      </p>
+      {/* key={stepIndex}: mỗi bước tự có state riêng (mã đang gõ, lỗi...) — đổi bước là
+          re-mount sạch, không cần effect reset state thủ công. */}
+      <Chapter1Step
+        key={stepIndex}
+        step={steps[stepIndex]}
+        isLastStep={isLastStep}
+        nextChapterLabel={chapter1.nextChapterLabel}
+        onCollectEvidence={onCollectEvidence}
+        onStepDone={goNextStep}
+      />
+    </div>
+  );
+}
 
-      {!foundEarbuds ? (
+function Chapter1Step({ step, isLastStep, nextChapterLabel, onCollectEvidence, onStepDone }) {
+  const [stepDone, setStepDone] = useState(false);
+  const [showHintButton, setShowHintButton] = useState(false);
+  const [showAdModal, setShowAdModal] = useState(false);
+  const [revealAnim, setRevealAnim] = useState(false);
+  const [codeValue, setCodeValue] = useState('');
+  const [codeError, setCodeError] = useState('');
+  const [choiceError, setChoiceError] = useState('');
+
+  useEffect(() => {
+    if (stepDone || !step.stuckThresholdMs) return;
+    const t = setTimeout(() => setShowHintButton(true), step.stuckThresholdMs);
+    return () => clearTimeout(t);
+  }, [stepDone, step]);
+
+  function finishStep(evidenceIds) {
+    setStepDone(true);
+    setRevealAnim(true);
+    (evidenceIds ?? []).forEach(onCollectEvidence);
+  }
+
+  function handleSearch() {
+    finishStep(step.evidenceIds);
+  }
+
+  function handleCodeSubmit() {
+    if (codeValue.trim() === step.correctCode) {
+      setCodeError('');
+      finishStep(step.evidenceIds);
+    } else {
+      setCodeError(step.wrongCodeText ?? 'Mã không đúng, thử lại.');
+    }
+  }
+
+  function handleChoice(option) {
+    if (option.correct) {
+      setChoiceError('');
+      finishStep(option.evidenceIds);
+    } else {
+      setChoiceError(option.wrongText ?? 'Có gì đó không ổn với lựa chọn này.');
+    }
+  }
+
+  return (
+    <>
+      {step.innerThoughtBefore && !stepDone && (
+        <p className="dialogue-inner-thought">
+          <em>{step.innerThoughtBefore}</em>
+        </p>
+      )}
+
+      {!stepDone && step.type === 'search' && (
         <>
-          <button className="btn-primary" onClick={handleFindEarbuds}>
-            🎧 Kiểm tra laptop và tai nghe của Vy
+          <button className="btn-primary" onClick={handleSearch}>
+            {step.actionLabel}
           </button>
           {showHintButton && (
             <button className="btn-hint" onClick={() => setShowAdModal(true)}>
@@ -63,40 +121,64 @@ export default function Chapter1({ onCollectEvidence, onComplete }) {
             </button>
           )}
         </>
-      ) : (
+      )}
+
+      {!stepDone && step.type === 'codeInput' && (
+        <div className="code-input-step">
+          <p>{step.prompt}</p>
+          <input
+            type="text"
+            value={codeValue}
+            onChange={(e) => setCodeValue(e.target.value)}
+            maxLength={step.maxLength ?? 8}
+            placeholder={step.placeholder ?? 'Nhập mã'}
+            style={{ fontSize: '1.2em', letterSpacing: '0.1em', textAlign: 'center', width: '100%' }}
+          />
+          {codeError && <p className="error-text">{codeError}</p>}
+          <button className="btn-primary" onClick={handleCodeSubmit} disabled={!codeValue.trim()}>
+            {step.actionLabel ?? 'Xác nhận'}
+          </button>
+          {showHintButton && (
+            <button className="btn-hint" onClick={() => setShowAdModal(true)}>
+              💡 Bí quá? Xem gợi ý
+            </button>
+          )}
+        </div>
+      )}
+
+      {!stepDone && step.type === 'choice' && (
+        <div className="choice-step">
+          <p>{step.prompt}</p>
+          <div className="choice-options">
+            {step.options.map((option) => (
+              <button key={option.id} className="btn-secondary" onClick={() => handleChoice(option)}>
+                {option.label}
+              </button>
+            ))}
+          </div>
+          {choiceError && <p className="error-text">{choiceError}</p>}
+          {showHintButton && (
+            <button className="btn-hint" onClick={() => setShowAdModal(true)}>
+              💡 Bí quá? Xem gợi ý
+            </button>
+          )}
+        </div>
+      )}
+
+      {stepDone && step.reveal && (
         <div className={revealAnim ? 'evidence-reveal reveal-anim' : 'evidence-reveal'}>
-          <h4>🎧 Tai nghe không dây của Vy</h4>
-          <p>
-            Cắm tai nghe vào laptop, Lam nghe riêng kênh mic của Vy trong bản ghi: lúc 21:35 có
-            tiếng cửa mở, tiếng bước chân... rồi chỉ còn tiếng quạt. Căn phòng trống.
-          </p>
-          <p>
-            <strong>Log Bluetooth</strong> trên laptop cho thấy tai nghe{' '}
-            <strong>ngắt kết nối lúc 21:36</strong> — tức 10 phút <em>trước</em> dòng "thôi tao
-            buồn ngủ quá" lúc 21:46.
-          </p>
-          <p>
-            Trong thư mục chung của nhóm trên laptop Vy có một{' '}
-            <strong>ảnh chụp màn hình chuyển khoản MoMo</strong> liên quan đến quỹ nhóm. Còn trên
-            máy tính chung của CLB, Lam thấy một <strong>tin nhắn thoại nháp chưa gửi</strong> tự
-            đồng bộ từ điện thoại của Chi.
-          </p>
-          <p className="deduction-hint">
-            🤔 Nếu Vy đã rời phòng từ 21:36 và không quay lại... thì ai đã gõ dòng "buồn ngủ" lúc
-            21:46?
-          </p>
-          <button className="btn-primary" onClick={onComplete}>
-            Tiếp tục sang Chương 2 →
+          {step.reveal.heading && <h4>{step.reveal.heading}</h4>}
+          {step.reveal.paragraphs.map((p, i) => (
+            <p key={i}>{p}</p>
+          ))}
+          {step.reveal.deductionHint && <p className="deduction-hint">{step.reveal.deductionHint}</p>}
+          <button className="btn-primary" onClick={onStepDone}>
+            {isLastStep ? nextChapterLabel ?? 'Tiếp tục →' : step.reveal.nextLabel ?? 'Tiếp tục →'}
           </button>
         </div>
       )}
 
-      {showAdModal && (
-        <RewardedAdModal
-          hintText="Những thứ Vy để lại ở nhà có thể cho biết cô ấy rời bàn học lúc nào. Thử xem kỹ laptop và tai nghe."
-          onClose={() => setShowAdModal(false)}
-        />
-      )}
-    </div>
+      {showAdModal && <RewardedAdModal hintText={step.hintText ?? ''} onClose={() => setShowAdModal(false)} />}
+    </>
   );
 }

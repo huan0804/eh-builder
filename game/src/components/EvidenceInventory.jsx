@@ -1,8 +1,7 @@
-import { evidenceList } from '../data/case1';
-
 // Danh sách chứng cứ đã thu thập. Có thể chọn NHIỀU chứng cứ cùng lúc:
 // chọn 1 để trình khi phỏng vấn, chọn một tổ hợp để loại giả thuyết / đối chất.
-export default function EvidenceInventory({ collectedIds, selectedIds, onToggle }) {
+// `evidenceList` truyền qua props (case đang chơi) — không import cứng 1 case cụ thể.
+export default function EvidenceInventory({ evidenceList, collectedIds, selectedIds, onToggle }) {
   return (
     <div className="evidence-inventory">
       <h3>📁 Chứng cứ đã thu thập</h3>

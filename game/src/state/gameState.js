@@ -10,17 +10,33 @@
 
 export const STAGES = ['prologue', 'chapter1', 'investigation', 'thinkingBoard', 'epilogue'];
 
-export const SAVE_KEY = 'eh-builder:case1:autosave';
+// Autosave riêng theo từng case (case1/case2/case3...) — mỗi phần lưu tiến độ độc lập,
+// người chơi có thể quay lại chơi/replay một phần cũ mà không mất tiến độ phần khác.
+export function saveKeyFor(caseId) {
+  return `eh-builder:${caseId}:autosave`;
+}
 export const SAVE_VERSION = 1;
 
-export const initialState = {
-  stage: 'prologue',
-  collectedIds: [],
-  // Lịch sử hội thoại mỗi nghi phạm: danh sách id node đã xem, node cuối là node hiện tại
-  interviewHistory: { khang: ['intro'], chi: ['intro'], duc: ['intro'] },
-  unlockedSteps: [],
-  eliminated: { A: false, B: false },
-};
+// Khởi tạo state cho một case cụ thể — interviewHistory bắt đầu ở node "intro" cho mỗi
+// suspect của case đó (đọc từ `suspectOrder`, không hardcode tên nghi phạm), eliminated bắt
+// đầu false cho mỗi giả thuyết loại được (đọc từ `hypotheses`, không hardcode 'A'/'B').
+export function createInitialState(caseData) {
+  const interviewHistory = {};
+  for (const suspectId of caseData.suspectOrder) {
+    interviewHistory[suspectId] = ['intro'];
+  }
+  const eliminated = {};
+  for (const hyp of Object.values(caseData.hypotheses)) {
+    if (!hyp.isCulprit) eliminated[hyp.id] = false;
+  }
+  return {
+    stage: 'prologue',
+    collectedIds: [],
+    interviewHistory,
+    unlockedSteps: [],
+    eliminated,
+  };
+}
 
 export function gameReducer(state, action) {
   switch (action.type) {
@@ -49,7 +65,7 @@ export function gameReducer(state, action) {
     case 'LOAD':
       return action.state;
     case 'RESTART':
-      return initialState;
+      return createInitialState(action.caseData);
     default:
       return state;
   }
@@ -73,21 +89,25 @@ function migrate(save) {
 
 // Kiểm tra save có đúng hình dạng không trước khi dùng (localStorage có thể bị sửa tay/hỏng).
 // Export để cloudSave.js tái dùng khi validate save tải về từ Supabase — không viết lại logic.
+// Tổng quát theo mọi case: không hardcode tên suspect, chỉ kiểm tra hình dạng chung
+// (interviewHistory là object có mọi giá trị là array id node).
 export function isValidState(s) {
   return (
     s &&
     STAGES.includes(s.stage) &&
     Array.isArray(s.collectedIds) &&
     s.interviewHistory &&
-    ['khang', 'chi', 'duc'].every((k) => Array.isArray(s.interviewHistory[k])) &&
+    typeof s.interviewHistory === 'object' &&
+    Object.values(s.interviewHistory).every((h) => Array.isArray(h)) &&
     Array.isArray(s.unlockedSteps) &&
-    s.eliminated
+    s.eliminated &&
+    typeof s.eliminated === 'object'
   );
 }
 
-export function loadAutosave() {
+export function loadAutosave(caseId) {
   try {
-    const raw = localStorage.getItem(SAVE_KEY);
+    const raw = localStorage.getItem(saveKeyFor(caseId));
     if (!raw) return null;
     const state = migrate(JSON.parse(raw));
     return isValidState(state) ? state : null;
@@ -96,11 +116,11 @@ export function loadAutosave() {
   }
 }
 
-export function writeAutosave(state) {
+export function writeAutosave(caseId, state) {
   try {
     if (state.stage === 'prologue') return; // chưa bắt đầu thì không ghi đè save cũ
     localStorage.setItem(
-      SAVE_KEY,
+      saveKeyFor(caseId),
       JSON.stringify({ version: SAVE_VERSION, savedAt: Date.now(), state })
     );
   } catch {
@@ -108,9 +128,9 @@ export function writeAutosave(state) {
   }
 }
 
-export function clearAutosave() {
+export function clearAutosave(caseId) {
   try {
-    localStorage.removeItem(SAVE_KEY);
+    localStorage.removeItem(saveKeyFor(caseId));
   } catch {
     /* bỏ qua */
   }

@@ -1,9 +1,8 @@
 import { useState } from 'react';
-import { thinkingBoardSolution } from '../data/case1';
 
-const LABELS = thinkingBoardSolution.labels;
-
-export default function ThinkingBoard({ onComplete }) {
+export default function ThinkingBoard({ data, onComplete }) {
+  const { meta, thinkingBoardSolution } = data;
+  const LABELS = thinkingBoardSolution.labels;
   const [answers, setAnswers] = useState({});
   const [submitted, setSubmitted] = useState(false);
   const [result, setResult] = useState(null);
@@ -22,7 +21,7 @@ export default function ThinkingBoard({ onComplete }) {
 
   return (
     <div className="chapter thinking-board chapter-enter">
-      <h2>Chương 4 — Kết luận Phần 1</h2>
+      <h2>{meta.thinkingBoardChapterTitle}</h2>
       <p className="briefing">
         Ghép các mảnh suy luận lại thành kết luận cuối cùng. Chọn đúng cho mỗi ô — sai một ô là kết
         luận không đứng vững.

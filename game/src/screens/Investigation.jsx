@@ -1,39 +1,53 @@
 import { useState, useEffect } from 'react';
-import {
-  interviews,
-  characters,
-  evidenceList,
-  hypotheses,
-  ducConfrontation,
-  isValidEvidenceSet,
-  investigationSteps,
-} from '../data/case1';
 import EvidenceInventory from '../components/EvidenceInventory';
 import RewardedAdModal from '../components/RewardedAdModal';
 
-const STUCK_THRESHOLD_MS = 25000;
+// Gộp Chương 2-3 (mọi phần): phỏng vấn nhiều nghi phạm + thu thập chứng cứ bổ sung +
+// 2-3 giả thuyết song song. Giả thuyết chỉ bị loại khi người chơi tự CHỌN đúng tổ hợp
+// chứng cứ — không tự loại khi thu thập. Tổng quát hoá đầy đủ theo case data (không hardcode
+// tên nghi phạm/số lượng giả thuyết) — xem docs/engine-lessons.md.
+//
+// Quy ước data mỗi case phải theo (xem case1.js):
+// - `suspectOrder`: thứ tự tab nghi phạm hiển thị.
+// - `hypotheses`: mỗi giả thuyết có `suspect` + (`isCulprit: true` HOẶC `requiredToEliminate`).
+//   Đúng 1 giả thuyết có `isCulprit: true` — suspect đó là người bị đối chất cuối cùng.
+// - `confrontation`: { required, allowedExtra } — tổ hợp chứng cứ mở node isFinalConfession
+//   của suspect culprit, chỉ khi mọi giả thuyết khác đã bị loại.
+// - `wrongEvidenceReply`: câu phản hồi mặc định theo suspectId khi trình sai chứng cứ.
+// - `investigationHints`: { stuckThresholdMs, rules: [{ when(ctx), text }] } — rule đầu tiên
+//   thoả `when` được dùng làm gợi ý rewarded-ad.
 
-// Gộp Chương 2-3: phỏng vấn 3 nghi phạm + thu thập chứng cứ bổ sung + 3 giả thuyết song song.
-// Giả thuyết chỉ bị loại khi người chơi tự CHỌN đúng tổ hợp chứng cứ — không tự loại khi thu thập.
+export default function Investigation({ data, state, dispatch, onComplete }) {
+  const {
+    meta,
+    interviews,
+    characters,
+    evidenceList,
+    hypotheses,
+    confrontation,
+    isValidEvidenceSet,
+    investigationSteps,
+    suspectOrder,
+    wrongEvidenceReply,
+    investigationHints,
+  } = data;
 
-
-const WRONG_EVIDENCE_REPLY = {
-  khang: 'Cái đó thì liên quan gì đến tao? Mày hỏi gì cụ thể đi.',
-  chi: 'Tao không hiểu cậu đang muốn nói gì...',
-};
-
-export default function Investigation({ state, dispatch, onComplete }) {
   // State cần lưu (chứng cứ, lịch sử hội thoại, giả thuyết đã loại) nằm ở App → được autosave.
   // State dưới đây chỉ là trạng thái tạm của giao diện.
   const { collectedIds, interviewHistory, unlockedSteps, eliminated } = state;
-  const [activeSuspect, setActiveSuspect] = useState('khang');
+  const [activeSuspect, setActiveSuspect] = useState(suspectOrder[0]);
   const [selectedIds, setSelectedIds] = useState([]);
   const [feedback, setFeedback] = useState(null);
   const [wrongReply, setWrongReply] = useState(null);
   const [showHintButton, setShowHintButton] = useState(false);
   const [showAdModal, setShowAdModal] = useState(false);
 
-  const canConfrontDuc = eliminated.A && eliminated.B;
+  const hypList = Object.values(hypotheses);
+  const eliminableHyps = hypList.filter((h) => !h.isCulprit);
+  const culpritHyp = hypList.find((h) => h.isCulprit);
+  const culpritSuspect = culpritHyp.suspect;
+  const canConfront = eliminableHyps.every((h) => eliminated[h.id]);
+
   const nodeById = (suspectId, nodeId) => interviews[suspectId].nodes.find((n) => n.id === nodeId);
   const currentNodeOf = (suspectId) => {
     const history = interviewHistory[suspectId];
@@ -43,26 +57,20 @@ export default function Investigation({ state, dispatch, onComplete }) {
   const lastNodeReached = (suspectId) => !currentNodeOf(suspectId).unlocksNext;
 
   useEffect(() => {
-    if (canConfrontDuc) {
+    if (canConfront) {
       setShowHintButton(false);
       return;
     }
     setShowHintButton(false);
-    const t = setTimeout(() => setShowHintButton(true), STUCK_THRESHOLD_MS);
+    const t = setTimeout(() => setShowHintButton(true), investigationHints.stuckThresholdMs);
     return () => clearTimeout(t);
-  }, [canConfrontDuc, collectedIds.length, eliminated.A, eliminated.B]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [canConfront, collectedIds.length, eliminated]);
 
   function currentHintText() {
-    if (!collectedIds.includes('roomAccessLog')) {
-      return 'Vy rời phòng lúc 21:36, nhưng dòng "buồn ngủ" xuất hiện lúc 21:46. Nền tảng học nhóm có ghi lại tài khoản nào đăng nhập từ thiết bị nào không?';
-    }
-    if (!eliminated.A) {
-      return 'Người gửi dòng "buồn ngủ" dùng thiết bị gì? Khang dùng điện thoại gì, và lúc 21:46 Khang đang làm gì? Hỏi kỹ Khang về khoảng trống trong log trường.';
-    }
-    if (!eliminated.B) {
-      return 'Chi cầm điện thoại lúc 21:43–21:44 để làm gì, trên thiết bị nào? Lúc 21:46 bản ghi hình thấy Chi đang làm gì?';
-    }
-    return 'Cùng một thiết bị đã làm cả hai việc che giấu. Hãy đối chất Đức bằng những chứng cứ cho thấy điều đó.';
+    const ctx = { collectedIds, eliminated, state };
+    const rule = investigationHints.rules.find((r) => r.when(ctx));
+    return rule?.text ?? '';
   }
 
   function toggleEvidence(id) {
@@ -80,7 +88,7 @@ export default function Investigation({ state, dispatch, onComplete }) {
     const presented = selectedIds[0];
 
     if (!nextNode || nextNode.requiresEvidence !== presented) {
-      setWrongReply({ suspectId, text: WRONG_EVIDENCE_REPLY[suspectId] });
+      setWrongReply({ suspectId, text: wrongEvidenceReply[suspectId] });
       return;
     }
     setWrongReply(null);
@@ -112,22 +120,25 @@ export default function Investigation({ state, dispatch, onComplete }) {
     }
   }
 
-  function confrontDuc() {
-    if (!isValidEvidenceSet(selectedIds, ducConfrontation.required, ducConfrontation.allowedExtra)) {
+  function confront() {
+    if (!isValidEvidenceSet(selectedIds, confrontation.required, confrontation.allowedExtra)) {
       setFeedback({
         ok: false,
-        text: 'Đức nhún vai: "Mấy cái đó thì chứng minh được gì?" — cần chứng cứ nối Đức với cả hai việc che giấu.',
+        text: 'Chưa đủ căn cứ để đối chất — cần chứng cứ nối rõ nghi phạm này với hành động thật.',
       });
       return;
     }
     setFeedback(null);
     setSelectedIds([]);
-    dispatch({ type: 'ADVANCE_NODE', suspectId: 'duc', nodeId: 'confronted' });
+    const culpritNodes = interviews[culpritSuspect].nodes;
+    const confessionNode = culpritNodes.find((n) => n.isFinalConfession);
+    dispatch({ type: 'ADVANCE_NODE', suspectId: culpritSuspect, nodeId: confessionNode.id });
   }
 
   const currentNode = currentNodeOf(activeSuspect);
   const seenNodes = interviewHistory[activeSuspect].map((id) => nodeById(activeSuspect, id));
-  const isDucFinalConfession = currentNode.isFinalConfession;
+  const isFinalConfessionShown = currentNode.isFinalConfession;
+  const isActiveSuspectCulprit = activeSuspect === culpritSuspect;
   const selectionLabel =
     selectedIds.length === 1
       ? `"${evidenceList[selectedIds[0]].name}"`
@@ -135,29 +146,29 @@ export default function Investigation({ state, dispatch, onComplete }) {
 
   return (
     <div className="chapter investigation chapter-enter">
-      <h2>Chương 2-3 — Ba người bạn cùng nhóm &amp; Dữ liệu không biết nói dối</h2>
+      <h2>{meta.investigationChapterTitle}</h2>
 
       <div className="hypothesis-board">
         <h3>🧩 Giả thuyết đang mở</h3>
         <ul>
-          {['A', 'B'].map((hypId) => (
-            <li key={hypId} className={eliminated[hypId] ? 'hypothesis eliminated' : 'hypothesis'}>
+          {eliminableHyps.map((hyp) => (
+            <li key={hyp.id} className={eliminated[hyp.id] ? 'hypothesis eliminated' : 'hypothesis'}>
               <span>
-                {hypId}: {hypotheses[hypId].label} {eliminated[hypId] && '— ĐÃ LOẠI'}
+                {hyp.id}: {hyp.label} {eliminated[hyp.id] && '— ĐÃ LOẠI'}
               </span>
-              {!eliminated[hypId] && (
+              {!eliminated[hyp.id] && (
                 <button
                   className="btn-eliminate"
                   disabled={selectedIds.length === 0}
-                  onClick={() => tryEliminate(hypId)}
+                  onClick={() => tryEliminate(hyp.id)}
                 >
                   Loại bằng {selectedIds.length} chứng cứ đang chọn
                 </button>
               )}
             </li>
           ))}
-          <li className={canConfrontDuc ? 'hypothesis active' : 'hypothesis'}>
-            C: {hypotheses.C.label} {canConfrontDuc && '— DUY NHẤT CÒN LẠI'}
+          <li className={canConfront ? 'hypothesis active' : 'hypothesis'}>
+            {culpritHyp.id}: {culpritHyp.label} {canConfront && '— DUY NHẤT CÒN LẠI'}
           </li>
         </ul>
         {feedback && (
@@ -193,6 +204,7 @@ export default function Investigation({ state, dispatch, onComplete }) {
 
       <div className="investigation-body">
         <EvidenceInventory
+          evidenceList={evidenceList}
           collectedIds={collectedIds}
           selectedIds={selectedIds}
           onToggle={toggleEvidence}
@@ -201,7 +213,7 @@ export default function Investigation({ state, dispatch, onComplete }) {
         <div className="interview-panel">
           <h3>🗣️ Phỏng vấn</h3>
           <div className="suspect-tabs">
-            {['khang', 'chi', 'duc'].map((id) => (
+            {suspectOrder.map((id) => (
               <button
                 key={id}
                 className={activeSuspect === id ? 'tab active' : 'tab'}
@@ -238,19 +250,9 @@ export default function Investigation({ state, dispatch, onComplete }) {
             )}
           </div>
 
-          {activeSuspect === 'duc' && !isDucFinalConfession && (
-            <button
-              className="btn-primary"
-              disabled={!canConfrontDuc || selectedIds.length === 0}
-              onClick={confrontDuc}
-            >
-              {canConfrontDuc
-                ? `Đối chất Đức bằng ${selectedIds.length} chứng cứ đang chọn →`
-                : 'Cần loại giả thuyết A và B trước'}
-            </button>
-          )}
-
-          {activeSuspect !== 'duc' && currentNode.unlocksNext && (
+          {/* Còn node hội thoại thường để mở tiếp (kể cả với culprit — vd Phong ở Phần 2
+              vẫn được phỏng vấn bình thường trước khi đủ điều kiện đối chất) */}
+          {!isFinalConfessionShown && currentNode.unlocksNext && (
             <button
               className="btn-primary"
               disabled={selectedIds.length !== 1}
@@ -262,17 +264,30 @@ export default function Investigation({ state, dispatch, onComplete }) {
             </button>
           )}
 
-          {isDucFinalConfession && (
+          {/* Đã hỏi hết node hội thoại thường của culprit (unlocksNext rỗng) nhưng chưa thú
+              nhận — đây là lúc hiện nút đối chất (vd Đức ở Phần 1: intro đã unlocksNext: null
+              ngay từ đầu; Phong ở Phần 2: sau khi hỏi hết các node thường) */}
+          {isActiveSuspectCulprit && !isFinalConfessionShown && !currentNode.unlocksNext && (
+            <button
+              className="btn-primary"
+              disabled={!canConfront || selectedIds.length === 0}
+              onClick={confront}
+            >
+              {canConfront
+                ? `Đối chất ${characters[culpritSuspect].name} bằng ${selectedIds.length} chứng cứ đang chọn →`
+                : `Cần loại ${eliminableHyps.length > 1 ? 'các giả thuyết còn lại' : 'giả thuyết còn lại'} trước`}
+            </button>
+          )}
+
+          {isFinalConfessionShown && (
             <button className="btn-primary" onClick={onComplete}>
-              Ghi nhận lời thú nhận — sang Chương 4 →
+              Ghi nhận lời thú nhận — sang chương kết →
             </button>
           )}
         </div>
       </div>
 
-      {showAdModal && (
-        <RewardedAdModal hintText={currentHintText()} onClose={() => setShowAdModal(false)} />
-      )}
+      {showAdModal && <RewardedAdModal hintText={currentHintText()} onClose={() => setShowAdModal(false)} />}
     </div>
   );
 }

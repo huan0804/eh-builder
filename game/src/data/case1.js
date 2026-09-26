@@ -1,5 +1,17 @@
 // Dữ liệu Vụ án Phần 1: "Buổi Livestream Cuối Cùng"
 // Nguồn: docs/phan-1-script.md — mọi thay đổi nội dung nên đồng bộ ngược lại file đó.
+//
+// Schema chung cho mọi case (case1/case2/case3...) — xem docs/engine-lessons.md.
+// Case này còn giữ thêm 2 export cũ (`hypotheses`, `ducConfrontation`) đã đổi tên/hình
+// dạng sang `hypotheses` (có `isCulprit`) + `confrontation` để dùng chung với Investigation.jsx.
+
+export const meta = {
+  id: 'case1',
+  partLabel: 'Phần 1',
+  title: 'Buổi Livestream Cuối Cùng',
+  investigationChapterTitle: 'Chương 2-3 — Ba người bạn cùng nhóm & Dữ liệu không biết nói dối',
+  thinkingBoardChapterTitle: 'Chương 4 — Kết luận Phần 1',
+};
 
 export const characters = {
   lam: { name: 'Lam', role: 'Nhân vật chính (bạn)' },
@@ -8,6 +20,22 @@ export const characters = {
   khang: { name: 'Khang', role: 'Thủ quỹ nhóm ôn thi' },
   chi: { name: 'Chi', role: 'Thành viên nhóm ôn thi' },
   duc: { name: 'Đức', role: 'Thành viên nhóm ôn thi' },
+};
+
+// Nội dung màn Prologue — Prologue.jsx chỉ render, không còn chứa lời thoại cứng.
+export const prologue = {
+  briefing: 'Phần 1 — Một vụ án dành cho CLB Ống Kính',
+  innerThought:
+    'Lam (nội tâm): "Quay phim thì dễ. Cái khó là biết cắt đoạn nào. Mà thôi — máy quay không nói dối, chỉ có người dựng là hay nói dối thôi."',
+  lines: [
+    {
+      speaker: 'Cô Hạnh',
+      text:
+        '"Lam này, con biết tin Vy lớp 11A2 chưa đến lớp sáng nay chứ? Gia đình đang rất lo, nhưng công an nói chưa đủ 24 tiếng nên chưa thể vào cuộc chính thức. CLB Ống Kính có quay lại buổi học nhóm tối qua đúng không? Mình xác minh trước, đỡ làm gia đình hoảng thêm nếu chưa chắc chắn. Mẹ Vy cũng gửi cô laptop, điện thoại và tai nghe Vy để lại — điện thoại thì khóa, nhưng laptop con xem được."',
+    },
+    { speaker: 'Lam', text: '"Dạ, con sẽ xem lại bản ghi ạ. Cô cho con hỏi thêm vài bạn trong nhóm được không ạ?"' },
+    { speaker: 'Cô Hạnh', text: '"Được, nhưng hỏi han thôi, đừng làm quá lên. Có gì nghiêm trọng, báo cô ngay."' },
+  ],
 };
 
 // Chat log buổi học nhóm tối thứ Năm (hiển thị ở Chương 1)
@@ -23,6 +51,36 @@ export const chatLog = [
   { time: '21:47', who: 'Đức', text: 'ơ Vy thoát lẹ vậy' },
   { time: '21:48', who: 'Chi', text: 'chắc buồn ngủ thật á' },
 ];
+
+// Nội dung màn Chương 1 — Chapter1.jsx chỉ render, không còn chứa lời thoại cứng.
+// `steps`: 1 bước duy nhất kiểu 'search' (khớp hành vi gốc của Phần 1).
+export const chapter1 = {
+  title: 'Chương 1 — Buổi tối cuối cùng',
+  briefing:
+    'Tại phòng CLB, Lam xem lại bản ghi buổi học nhóm tối thứ Năm. Trên bàn là laptop và tai nghe mẹ Vy gửi cô Hạnh — những thứ Vy để lại ở nhà.',
+  nextChapterLabel: 'Tiếp tục sang Chương 2 →',
+  steps: [
+    {
+      type: 'search',
+      innerThoughtBefore:
+        'Lam (nội tâm): "Cả buổi, khung hình của Vy chỉ là một màu đen. Không ai thấy Vy rời đi — vì chẳng có gì để thấy."',
+      actionLabel: '🎧 Kiểm tra laptop và tai nghe của Vy',
+      hintText:
+        'Những thứ Vy để lại ở nhà có thể cho biết cô ấy rời bàn học lúc nào. Thử xem kỹ laptop và tai nghe.',
+      stuckThresholdMs: 15000,
+      evidenceIds: ['sessionRecording', 'earbudsBluetoothLog', 'momoTransfer', 'chiVoiceDraft'],
+      reveal: {
+        heading: '🎧 Tai nghe không dây của Vy',
+        paragraphs: [
+          'Cắm tai nghe vào laptop, Lam nghe riêng kênh mic của Vy trong bản ghi: lúc 21:35 có tiếng cửa mở, tiếng bước chân... rồi chỉ còn tiếng quạt. Căn phòng trống.',
+          'Log Bluetooth trên laptop cho thấy tai nghe ngắt kết nối lúc 21:36 — tức 10 phút trước dòng "thôi tao buồn ngủ quá" lúc 21:46.',
+          'Trong thư mục chung của nhóm trên laptop Vy có một ảnh chụp màn hình chuyển khoản MoMo liên quan đến quỹ nhóm. Còn trên máy tính chung của CLB, Lam thấy một tin nhắn thoại nháp chưa gửi tự đồng bộ từ điện thoại của Chi.',
+        ],
+        deductionHint: '🤔 Nếu Vy đã rời phòng từ 21:36 và không quay lại... thì ai đã gõ dòng "buồn ngủ" lúc 21:46?',
+      },
+    },
+  ],
+};
 
 // Chứng cứ: mỗi chứng cứ có id duy nhất
 export const evidenceList = {
@@ -99,8 +157,21 @@ export const investigationSteps = [
   { id: 'vySearchHistory', label: '💻 Xem kỹ lịch sử tìm kiếm trên laptop Vy' },
 ];
 
+// Danh sách nghi phạm được phỏng vấn, theo đúng thứ tự hiển thị tab (Investigation.jsx đọc
+// từ đây thay vì hardcode ['khang','chi','duc']).
+export const suspectOrder = ['khang', 'chi', 'duc'];
+
+// Câu phản hồi khi trình sai chứng cứ (không khớp requiresEvidence của node kế tiếp)
+export const wrongEvidenceReply = {
+  khang: 'Cái đó thì liên quan gì đến tao? Mày hỏi gì cụ thể đi.',
+  chi: 'Tao không hiểu cậu đang muốn nói gì...',
+  duc: 'Tao không hiểu cậu đang nói cái gì.',
+};
+
 // 3 giả thuyết song song. Người chơi phải CHỌN đúng tổ hợp chứng cứ để loại một giả thuyết.
 // requiredToEliminate: phải có đủ; allowedExtra: được phép chọn thêm mà không bị tính là sai.
+// isCulprit: true đánh dấu giả thuyết KHÔNG bị loại — suspect này là thủ phạm/người cần đối chất
+// cuối cùng (thay cho quy ước ẩn cũ "requiredToEliminate rỗng nghĩa là đúng").
 export const hypotheses = {
   A: {
     id: 'A',
@@ -124,13 +195,15 @@ export const hypotheses = {
     id: 'C',
     suspect: 'duc',
     label: 'Đức giúp Vy giấu đi',
-    requiredToEliminate: [], // Không bị loại — đáp án đúng
+    isCulprit: true,
+    requiredToEliminate: [],
     allowedExtra: [],
   },
 };
 
-// Đối chất Đức: chỉ mở khi A và B đã bị loại, và phải trình đúng tổ hợp chứng cứ
-export const ducConfrontation = {
+// Đối chất cuối cùng: chỉ mở khi mọi giả thuyết KHÔNG phải culprit đã bị loại, và phải trình
+// đúng tổ hợp chứng cứ. Investigation.jsx suy ra suspect cần đối chất từ hypotheses (isCulprit).
+export const confrontation = {
   required: ['earbudsBluetoothLog', 'roomAccessLog', 'fakeCheckinPhoto'],
   allowedExtra: ['sessionRecording', 'vySearchHistory'],
 };
@@ -231,6 +304,32 @@ export const interviews = {
   },
 };
 
+// Gợi ý theo ngữ cảnh (rewarded ads) — Investigation.jsx đọc theo thứ tự, trả về gợi ý đầu
+// tiên có `when` còn chưa thoả (mỗi case tự định nghĩa điều kiện theo state riêng của mình).
+export const investigationHints = {
+  stuckThresholdMs: 25000,
+  rules: [
+    {
+      when: (ctx) => !ctx.collectedIds.includes('roomAccessLog'),
+      text:
+        'Vy rời phòng lúc 21:36, nhưng dòng "buồn ngủ" xuất hiện lúc 21:46. Nền tảng học nhóm có ghi lại tài khoản nào đăng nhập từ thiết bị nào không?',
+    },
+    {
+      when: (ctx) => !ctx.eliminated.A,
+      text:
+        'Người gửi dòng "buồn ngủ" dùng thiết bị gì? Khang dùng điện thoại gì, và lúc 21:46 Khang đang làm gì? Hỏi kỹ Khang về khoảng trống trong log trường.',
+    },
+    {
+      when: (ctx) => !ctx.eliminated.B,
+      text: 'Chi cầm điện thoại lúc 21:43–21:44 để làm gì, trên thiết bị nào? Lúc 21:46 bản ghi hình thấy Chi đang làm gì?',
+    },
+    {
+      when: () => true,
+      text: 'Cùng một thiết bị đã làm cả hai việc che giấu. Hãy đối chất Đức bằng những chứng cứ cho thấy điều đó.',
+    },
+  ],
+};
+
 // Thinking Board — các mảnh kết luận cần ghép ở Chương 4
 export const thinkingBoardSolution = {
   slots: [
@@ -292,4 +391,14 @@ export const epilogue = {
 "Cậu cũng để ý thấy giống vụ của anh Minh năm ngoái đúng không? Đừng nói với ai. Im lặng thì an toàn."
 
 Lam (nội tâm): "Vụ của anh Minh năm ngoái...? Mình chưa từng nghe ai nhắc đến chuyện này cả."`,
+  nextPartHint: 'Phần 2 sẽ hé lộ "vụ của anh Minh năm ngoái" là gì...',
+};
+
+// Cảnh mở đầu season (ColdOpen) — xem docs/phan-1-script.md mục 1b. ColdOpen.jsx chỉ render
+// theo timestamp/hesitant, không còn hardcode nội dung riêng cho Phần 1.
+export const coldOpen = {
+  timestamp: 'Thứ Hai, 22:17',
+  hesitant: true, // người gửi do dự (bong bóng "đang gõ" nhấp nháy trước khi gửi câu cuối)
+  finalLine: 'Im lặng thì an toàn.',
+  chatListEntry: { name: 'M.', date: 'thg 4, năm ngoái', preview: 'Im lặng thì an toàn.' },
 };
