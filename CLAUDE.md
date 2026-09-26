@@ -1,6 +1,6 @@
 # CLAUDE.md — Dự án Game Trinh thám Suy luận (chưa đặt tên chính thức)
 
-> File này giúp Claude Code (hoặc bất kỳ session mới nào) hiểu ngay bối cảnh dự án mà không cần đọc lại lịch sử hội thoại. Đọc file này trước, sau đó đọc `docs/` nếu cần chi tiết sâu hơn.
+> File này giúp Claude Code (hoặc bất kỳ session mới nào) hiểu ngay bối cảnh dự án mà không cần đọc lại lịch sử hội thoại. Đọc file này trước, sau đó đọc `docs/` nếu cần chi tiết sâu hơn. Đọc thêm [`WORK_LOG.md`](WORK_LOG.md) (nhật ký từng phiên, mới nhất ở trên) để biết phiên gần nhất vừa làm gì và còn gì dở dang trước khi bắt tay vào việc.
 
 ---
 
