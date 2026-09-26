@@ -52,12 +52,27 @@ Verify: build + playtest Playwright Phần 1 pass 100% qua TitleScreen → ColdO
 
 Commit `c6cb8ab`, push — Vercel tự deploy tiếp.
 
+**11. User phản đối tiếp: gửi ảnh concept art chính thức của Black Myth: Wukong, nói "giao diện phải nhập vai như vậy, chứ không phải toàn đọc chữ"**:
+- Phải nói thẳng khoảng cách thực tế: ảnh đó là sản phẩm của studio hàng trăm người/nhiều năm/Unreal Engine 5, không thể đạt được bằng cách "nâng cấp CSS" cho 1 web app content-as-data. Không hứa làm được điều không làm được.
+- Hỏi lại user hướng đi (chấp nhận trần web/solo-dev và đẩy visual tối đa trong khả năng đó, vs. đổi hẳn hướng đầu tư ngân sách/nhân sự, vs. tạm dừng visual quay lại cốt truyện). User chọn: **chấp nhận giới hạn, đẩy visual tối đa trong khả năng web/solo-dev**.
+- User yêu cầu tiếp: "bạn hãy tự tạo mà chỉnh đi, không cần tôi" — tức tự làm ảnh luôn, không chờ user tạo ảnh AI rồi gửi qua.
+- **Xác nhận lại (2 lần, qua ToolSearch) là phiên này KHÔNG có công cụ tạo ảnh AI** (không DALL-E/Midjourney/Gemini Image nào khả dụng) — đây là giới hạn kỹ thuật thật, không phải từ chối làm việc.
+- Giải pháp đã chọn và thực hiện: **tự vẽ 14 ảnh SVG vector bằng code** (không phải AI-art, là minh hoạ hình học đơn giản do tôi viết trực tiếp) để có ảnh THẬT ngay, thay vì để trống fallback:
+  - 2 ảnh nền: `title.svg` (hành lang trường lúc hoàng hôn, phối cảnh cột + sàn), `clb-ong-kinh-room.svg` (phòng CLB — bàn dựng phim, laptop màn hình sáng, tai nghe, kệ thiết bị, cửa sổ ánh chiều)
+  - 12 ảnh portrait: Khang (3 trạng thái), Chi (3), Đức (2), Lam (2), Cô Hạnh (2) — mỗi người có tóc/khuôn mặt/tông màu nền riêng để dễ phân biệt
+  - Mở rộng `CharacterPortrait.jsx`/`lib/backgrounds.js` nhận thêm định dạng `.svg` (trước chỉ PNG/JPG)
+  - Chỉnh CSS overlay (`chapter.has-scene-bg::before`, `.title-screen-overlay/-bg`) qua vài lần lặp — ban đầu overlay quá tối/đậm che gần hết ảnh, đã giảm để ảnh nền hiện rõ mà chữ vẫn đọc được (verify bằng screenshot Playwright trước/sau)
+- Cập nhật `docs/portrait-prompts.md`: làm rõ ảnh hiện tại là SVG tạm, không phải AI-art theo đúng prompt — nếu có công cụ AI sau này, chỉ cần ghi đè đúng path là thay được, không cần sửa code.
+- Verify: build + playtest Playwright Phần 1 pass 100% với ảnh thật (không còn fallback icon/gradient).
+- Commit `d2655ff`, push.
+
 ### Trạng thái cuối phiên
-- **Đã xong, verify bằng Playwright**: cả 3 phần chơi được end-to-end. Engine tổng quát hoá đầy đủ. TitleScreen + portrait + scene background hoạt động đúng với fallback graceful — **nhưng CHƯA có ảnh thật nào**, toàn bộ đang hiện fallback (khung màu/icon/gradient).
+- **Đã xong, verify bằng Playwright**: cả 3 phần chơi được end-to-end. Engine tổng quát hoá đầy đủ. TitleScreen + portrait + scene background hoạt động với **ảnh SVG thật** (không còn fallback) cho toàn bộ Phần 1: 2 ảnh nền + 12 portrait (Khang/Chi/Đức/Lam/Cô Hạnh).
+- **Bài học quan trọng nhất phiên này — về kỳ vọng, không phải kỹ thuật**: user ban đầu kỳ vọng mức độ visual ngang AAA 3D (Black Myth: Wukong). Phải làm rõ ràng, thẳng thắn khoảng cách giữa kỳ vọng đó và ràng buộc dự án đã tự chốt (solo dev, web, ads-first) TRƯỚC KHI tiếp tục code — nói dối hoặc lảng tránh giới hạn chỉ khiến làm sai hướng nhiều lần rồi mới vỡ lẽ. Khi không có công cụ cần thiết (ở đây là tạo ảnh AI), tự tìm giải pháp thay thế khả thi (vẽ SVG) thay vì chỉ trả lại yêu cầu cho user hoặc dừng lại.
 - **Dở dang / việc tiếp theo rõ ràng nhất**:
-  1. User cần tự tạo ảnh theo `docs/portrait-prompts.md` (9+ portrait Phần 1 gồm Khang/Chi/Đức/Lam/Cô Hạnh, 2 ảnh nền title+phòng CLB) rồi gửi lại hoặc tự thả vào `game/src/assets/portraits/` và `game/src/assets/backgrounds/` — không cần sửa code, engine tự nhận.
-  2. Portrait + scene background hiện CHỈ làm cho Phần 1 (case1.js). Phần 2/3 (case2.js/case3.js) chưa có `portraits`/`background`/`emotion` — cần làm tương tự khi Phần 1 ổn.
+  1. **Ưu tiên cao nhất**: thay 14 ảnh SVG tạm bằng ảnh AI thật theo đúng prompt ở `docs/portrait-prompts.md` mục 1-3, khi có công cụ tạo ảnh AI khả dụng (phiên sau hoặc qua công cụ khác) — chỉ cần ghi đè đúng path, xem mục 4 của file đó. Chất lượng SVG hiện tại là giải pháp tạm, không phải đích đến.
+  2. Portrait + scene background hiện CHỈ làm cho Phần 1 (case1.js). Phần 2/3 (case2.js/case3.js) chưa có `portraits`/`background`/`emotion` — cần làm tương tự khi Phần 1 ổn (kể cả khi vẫn dùng SVG tạm).
   3. Chưa chốt tên chính thức của game (TitleScreen đang dùng tạm "CLB Ống Kính").
-  4. Các việc "Chưa làm" khác không đổi so với trước phiên này: SDK ads thật, responsive mobile kỹ hơn, âm thanh, evidence summary ngắn cho điện thoại — xem CLAUDE.md mục 5.
-- **Quy ước mới cần nhớ**: mọi ảnh (portrait lẫn background) dùng chung nguyên tắc "khai báo path trong data, engine tự dò bằng `import.meta.glob`, fallback graceful khi chưa có ảnh" — đừng phá nguyên tắc này khi thêm loại ảnh mới (tránh phải sửa code mỗi lần thêm ảnh).
+  4. Các việc "Chưa làm" khác không đổi: SDK ads thật, responsive mobile kỹ hơn, âm thanh, evidence summary ngắn cho điện thoại — xem CLAUDE.md mục 5.
+- **Quy ước mới cần nhớ**: mọi ảnh (portrait lẫn background) dùng chung nguyên tắc "khai báo path trong data, engine tự dò bằng `import.meta.glob` (nhận cả PNG/JPG/SVG), fallback graceful khi chưa có ảnh" — đừng phá nguyên tắc này khi thêm loại ảnh mới. Đổi định dạng ảnh (SVG → PNG chẳng hạn) thì phải sửa lại đường dẫn trong data (`case1.js`/`TitleScreen.jsx`), không tự động.
 - **Playtest scripts tạm thời** (`playtest-case1/2/3.mjs`) không commit vào repo — đang lưu trong scratchpad phiên này (`C:\Users\Huan\AppData\Local\Temp\claude\...\scratchpad\`), sẽ mất khi phiên kết thúc. Phiên sau cần viết lại nếu muốn playtest tự động (không tốn nhiều công — pattern đã ổn định, xem cấu trúc trong log này hoặc trong lịch sử hội thoại).
